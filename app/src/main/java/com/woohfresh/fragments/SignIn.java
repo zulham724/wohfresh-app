@@ -62,6 +62,7 @@ public class SignIn extends Fragment {
                         Prefs.putString(Datas.OAUTH_EXPIRES_IN, String.valueOf(user.getExpiresIn()));
                         Prefs.putString(Datas.OAUTH_ACCESS_TOKEN,user.getAccessToken());
                         Prefs.putString(Datas.OAUTH_REFRESH_TOKEN,user.getRefreshToken());
+                        Prefs.putString(Datas.IS_LOGIN,"1");
                         App.TShort("success");
                     }
                     @Override
@@ -73,7 +74,7 @@ public class SignIn extends Fragment {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             // get parsed error object (If ApiError is your class)
                             RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getMessage());
+                            App.TShort(apiError.getError());
                         } else {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                         }
@@ -91,7 +92,11 @@ public class SignIn extends Fragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_signin, parent, false);
+        if(BuildConfig.DEBUG){
+            return inflater.inflate(R.layout.fragment_signin_dev, parent, false);
+        }else {
+            return inflater.inflate(R.layout.fragment_signin, parent, false);
+        }
     }
 
     @Override

@@ -34,4 +34,8 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="MyButtonSignupSuccess" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/my_btn_signup_success</item>
+    </style>
+
 </resources>

@@ -19,6 +19,7 @@
             android:layout_marginTop="5dp">
 
             <EditText
+                android:text="admin@admin.com"
                 android:id="@+id/etLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,6 +35,7 @@
             app:passwordToggleEnabled="true">
 
             <EditText
+                android:text="password"
                 android:id="@+id/etLoginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

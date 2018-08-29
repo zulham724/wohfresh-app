@@ -7,5 +7,8 @@
     <string name="login_password">Password</string>
     <string name="login_no_acc"><![CDATA[Does not have an account <font color=#0D9D59><b>SIGN UP</b></font> now]]></string>
     <string name="signup_term"><![CDATA[By signing up, you agree to our <font color=#0D9D59>Term</font> and <font color=#0D9D59>Privacy Policy</font>]]></string>
+    <string name="signup_success">Thank you for registering!</string>
+    <string name="signup_success_tag">A confirmation has been sent to your registered email address.\nPlease check our email in your mailbox and follow the\ninstruction to activate your account.</string>
+
     <string name="err_server">Connection failed</string>
 </resources>

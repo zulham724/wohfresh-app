@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:text="@string/signup_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+    <TextView
+        android:gravity="center"
+        android:text="@string/signup_success_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btnOk"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/white"
+        style="@style/MyButtonSignupSuccess"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:text="OK"/>
+
+</LinearLayout>
