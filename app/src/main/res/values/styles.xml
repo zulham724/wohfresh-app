@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />-->
+    <!--<style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />-->
+
     <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -34,8 +37,8 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="MyButtonSignupSuccess" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/my_btn_signup_success</item>
+    <style name="MyButtonSignUpSuccess" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/my_btn_sign_up_success</item>
     </style>
 
 </resources>

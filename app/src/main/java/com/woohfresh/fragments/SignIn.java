@@ -1,6 +1,7 @@
 package com.woohfresh.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -18,6 +19,7 @@ import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.App;
 import com.woohfresh.BuildConfig;
 import com.woohfresh.R;
+import com.woohfresh.activity.ForgotPasswordActivity;
 import com.woohfresh.data.local.Datas;
 import com.woohfresh.models.api.POauth;
 import com.woohfresh.models.api.RGlobal;
@@ -80,6 +82,11 @@ public class SignIn extends Fragment {
                         }
                     }
                 });
+    }
+
+    @OnClick(R.id.tvForgotPassword)
+    public void ocFP(){
+        startActivity(new Intent(getActivity(), ForgotPasswordActivity.class));
     }
 
     @Override

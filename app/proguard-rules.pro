@@ -20,3 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -dontwarn okio.**
+-keep class com.mobsandgeeks.saripaar.** {*;}
+-keep @com.mobsandgeeks.saripaar.annotation.ValidateUsing class * {*;}

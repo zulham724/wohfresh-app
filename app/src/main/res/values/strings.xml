@@ -11,4 +11,5 @@
     <string name="signup_success_tag">A confirmation has been sent to your registered email address.\nPlease check our email in your mailbox and follow the\ninstruction to activate your account.</string>
 
     <string name="err_server">Connection failed</string>
+    <string name="err_blank">Please fill the field</string>
 </resources>

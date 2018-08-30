@@ -24,7 +24,7 @@
         android:id="@+id/btnOk"
         android:layout_marginTop="10dp"
         android:textColor="@android:color/white"
-        style="@style/MyButtonSignupSuccess"
+        style="@style/MyButtonSignUpSuccess"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:text="OK"/>

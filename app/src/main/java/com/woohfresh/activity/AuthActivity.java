@@ -51,7 +51,6 @@ public class AuthActivity extends AppCompatActivity {
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP,25f);
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
