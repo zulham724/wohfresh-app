@@ -19,7 +19,6 @@
             android:layout_marginTop="5dp">
 
             <EditText
-                android:text="admin@admin.com"
                 android:id="@+id/etLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +34,6 @@
             app:passwordToggleEnabled="true">
 
             <EditText
-                android:text="password"
                 android:id="@+id/etLoginPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,9 +70,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:text="or login with"
+                android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp" />
+                android:text="or login with" />
 
             <View
                 android:layout_width="wrap_content"
@@ -90,50 +88,51 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-        <android.support.v7.widget.AppCompatButton
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
-            android:padding="12dp"
-            android:text="Google"
-            android:textAllCaps="false"
-            android:layout_marginRight="10dp"
-            android:textColor="@android:color/white"
-            android:background="@android:color/holo_red_light"/>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btnSosmedGoogle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="24dp"
+                android:layout_weight="1"
+                android:background="@android:color/holo_red_light"
+                android:padding="12dp"
+                android:text="Google"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
 
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginTop="24dp"
+                android:layout_weight="1"
+                android:background="@android:color/holo_blue_light"
                 android:padding="12dp"
                 android:text="Facebook"
                 android:textAllCaps="false"
-                android:layout_marginRight="10dp"
-                android:textColor="@android:color/white"
-                android:background="@android:color/holo_blue_light"/>
+                android:textColor="@android:color/white" />
 
         </LinearLayout>
 
         <TextView
-            android:gravity="center"
             android:id="@+id/tvNoAccount"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:gravity="center" />
 
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/tvForgotPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:text="Forgot Password"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"/>
+            android:text="Forgot Password"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </ScrollView>

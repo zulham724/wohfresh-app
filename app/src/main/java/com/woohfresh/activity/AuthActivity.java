@@ -15,6 +15,7 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.App;
 import com.woohfresh.R;
