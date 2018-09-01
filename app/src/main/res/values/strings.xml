@@ -1,11 +1,24 @@
 <resources>
-    <string name="app_name">WoohFresh</string>
-    <string name="tv_style_app_title"><![CDATA[<font color=#dd2c00>wooh</font><font color=#FFFFFF>fresh</font>]]></string>
+    <string name="app_name" translatable="false">WoohFresh</string>
+
+    <!--setting-->
+    <string name="setting_lang">Choose Language</string>
+    <string name="setting_lang_change">Change</string>
+    <string name="setting_cancel">Cancel</string>
+
+    <string name="tv_style_app_title" translatable="false"><![CDATA[<font color=#dd2c00>wooh</font><font color=#FFFFFF>fresh</font>]]></string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="login">Log In</string>
+    <string name="login_option">or login with</string>
+    <string name="login_forgot_password">Forgot Password</string>
     <string name="login_email">Email / Cell Phone Number</string>
     <string name="login_password">Password</string>
+    <string name="login_password_re">Re-type password</string>
     <string name="login_no_acc"><![CDATA[Does not have an account <font color=#0D9D59><b>SIGN UP</b></font> now]]></string>
+
+    <string name="signup">Register</string>
     <string name="signup_term"><![CDATA[By signing up, you agree to our <font color=#0D9D59>Term</font> and <font color=#0D9D59>Privacy Policy</font>]]></string>
     <string name="signup_success">Thank you for registering!</string>
     <string name="signup_success_tag">A confirmation has been sent to your registered email address.\nPlease check our email in your mailbox and follow the\ninstruction to activate your account.</string>

@@ -3,6 +3,8 @@ package com.woohfresh.data.local;
 public class Datas {
 
     public static final String IS_LOGIN = "";
+    public static final String IS_LANGUAGE = "";
+    public static final String APP_LANG = "APP_LANG";
     public static final String APP_CLIENT_ID = "APP_CLIENT_ID";
     public static final String APP_CLIENT_SECRET = "APP_CLIENT_SECRET";
     public static final String APP_SOSMED_ID = "APP_SOSMED_ID";

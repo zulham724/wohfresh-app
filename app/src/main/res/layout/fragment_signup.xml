@@ -22,7 +22,7 @@
                 android:id="@+id/etSignupEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email" />
+                android:hint="@string/login_email" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
@@ -53,7 +53,7 @@
                 android:id="@+id/etSignupPasswordRe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Re-type password"
+                android:hint="@string/login_password_re"
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
@@ -65,7 +65,7 @@
             android:layout_marginTop="24dp"
             android:background="@color/colorPrimary"
             android:padding="12dp"
-            android:text="Register"
+            android:text="@string/signup"
             android:textColor="@android:color/white" />
 
         <TextView

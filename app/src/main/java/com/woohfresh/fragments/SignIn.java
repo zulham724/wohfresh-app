@@ -1,12 +1,12 @@
 package com.woohfresh.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatButton;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,7 +38,6 @@ import com.woohfresh.R;
 import com.woohfresh.activity.ForgotPasswordActivity;
 import com.woohfresh.activity.MyProfileActivity;
 import com.woohfresh.data.local.Datas;
-import com.woohfresh.data.sources.remote.api.Apis;
 import com.woohfresh.models.api.POauth;
 import com.woohfresh.models.api.RGlobal;
 
@@ -47,6 +46,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.woohfresh.data.local.Datas.IS_LANGUAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,7 +58,6 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
     App.LoadingPrimary pd;
 
     Context mContext;
-
     Validator validator;
 
     private static final int RC_SIGN_IN = 007;
@@ -116,6 +116,10 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         mGoogleApiClient.connect();
+
+        if(Prefs.getString(IS_LANGUAGE,"").isEmpty()){
+            App.showDialogLang(getActivity());
+        }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
