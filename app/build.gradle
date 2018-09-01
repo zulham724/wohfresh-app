@@ -27,6 +27,9 @@ android {
         release {
             buildConfigField "String", "SERVER_URL", '"http://wohfresh.ardata.co.id/"'
             buildConfigField "String", "GOOGLE_WEB_CLIENT_ID", '"897307430904-fvfa7fqbmek9l37can9kk9fq3or9pvv8.apps.googleusercontent.com"'
+            resValue "string", "facebook_app_id", '"2034045213329538"'
+            resValue "string", "fb_login_protocol_scheme", '"fb2034045213329538"'
+            resValue("bool", "FIREBASE_CRASH_ENABLED", "true")
             zipAlignEnabled true
             debuggable false
             minifyEnabled true
@@ -37,6 +40,9 @@ android {
         debug {
             buildConfigField "String", "SERVER_URL", '"http://wohfresh.ardata.co.id/"'
             buildConfigField "String", "GOOGLE_WEB_CLIENT_ID", '"897307430904-fvfa7fqbmek9l37can9kk9fq3or9pvv8.apps.googleusercontent.com"'
+            resValue "string", "facebook_app_id", '"2034045213329538"'
+            resValue "string", "fb_login_protocol_scheme", '"fb2034045213329538"'
+            resValue("bool", "FIREBASE_CRASH_ENABLED", "false")
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

@@ -35,6 +35,8 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.data.sources.remote.api.ApiService;
 import com.woohfresh.data.sources.remote.api.Apis;
@@ -88,6 +90,9 @@ public class App extends Application {
                 .addInterceptor(interceptor)
                 .build();
         AndroidNetworking.initialize(getApplicationContext(), client);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
     }
 
     public static Context getAppContext() {
@@ -112,7 +117,7 @@ public class App extends Application {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             iv = new ImageView(context);
-            iv.setImageResource(R.mipmap.ic_launcher);
+            iv.setImageResource(R.drawable.ic_toys);
             layout.addView(iv, params);
 
             TextView tv = new TextView(context);
