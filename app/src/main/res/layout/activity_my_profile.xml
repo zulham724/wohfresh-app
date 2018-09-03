@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="50dp"
-        android:background="@color/colorPrimary"
-        android:layout_alignParentLeft="true" />
+    android:orientation="vertical"
+    android:background="@color/colorPreWhite">
 
     <ScrollView
         android:id="@+id/scrolView_account"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
 
         <RelativeLayout
             android:id="@+id/linear_account"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,59 +32,188 @@
                     android:layout_marginTop="100dp"
                     android:orientation="vertical">
 
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/profile_fullname"
+                            android:imeOptions="actionNext"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
                     <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_gender"/>
+
+                        <RadioGroup
+                            android:orientation="horizontal"
+                            android:id="@+id/radioSex"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" >
+
+                            <RadioButton
+                                android:id="@+id/rbMale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/profile_male"
+                                android:checked="true" />
+
+                            <RadioButton
+                                android:id="@+id/rbFemale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/profile_female" />
+
+                        </RadioGroup>
+
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/profile_dob"/>-->
+
+                    <EditText
+                        android:id="@+id/etProfileDob"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="profile Details"
-                        android:textStyle="bold" />
+                        android:hint="@string/profile_dob"
+                        android:imeOptions="actionNext"
+                        android:clickable="true"
+                        android:editable="false"/>
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColorHint="@color/colorPrimary">
+                        android:layout_height="wrap_content">
 
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Please Enter User Name"
+                            android:hint="@string/profile_phone"
                             android:imeOptions="actionNext"
-                            android:textColorHint="@color/colorPrimary" />
+                            android:inputType="phone"/>
 
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColorHint="@color/colorPrimary">
+                        android:layout_height="wrap_content">
 
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/login_email"
+                            android:hint="@string/profile_email"
                             android:imeOptions="actionNext"
-                            android:inputType="textEmailAddress"
-                            android:textColorHint="@color/colorPrimary" />
+                            android:inputType="textEmailAddress" />
 
                     </android.support.design.widget.TextInputLayout>
 
-
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColorHint="@color/colorPrimary">
+                        android:layout_height="wrap_content">
 
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/login_password"
                             android:imeOptions="actionNext"
-                            android:inputType="textPassword"
-                            android:textColorHint="@color/colorPrimary" />
+                            android:inputType="textPassword"/>
 
                     </android.support.design.widget.TextInputLayout>
 
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/login_password_re"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <TextView
+                        android:layout_margin="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_state"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_spinner_region">
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/arr_profile_state"
+                        android:prompt="@string/profile_prompt_state" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_margin="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_city"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_spinner_region">
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/arr_profile_city"
+                            android:prompt="@string/profile_prompt_city" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_margin="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_subdistrict"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_spinner_region">
+                        <Spinner
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/arr_profile_subdistrict"
+                            android:prompt="@string/profile_prompt_subdistrict" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_margin="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_address"/>
+                    <RelativeLayout
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_spinner_region">
+                    <EditText
+                        android:background="@android:color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:inputType="text|textMultiLine"
+                        android:gravity="top"/>
+                    </RelativeLayout>
+
                 </LinearLayout>
+
+                <android.support.v7.widget.AppCompatButton
+                    android:background="@color/colorPrimary"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/act_save"
+                    android:textAllCaps="true"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"/>
             </LinearLayout>
 
             <RelativeLayout
@@ -107,25 +225,23 @@
 
                 <ImageView
                     android:layout_marginTop="20dp"
-                    android:id="@+id/imageview_account_profile"
+                    android:id="@+id/ivProfile"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/profile_blank"/>
+                    android:layout_centerHorizontal="true"/>
 
                 <android.support.design.widget.FloatingActionButton
+                    android:src="@drawable/drawableleft_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_alignEnd="@+id/imageview_account_profile"
+                    android:layout_alignEnd="@+id/ivProfile"
                     android:layout_marginTop="10dp"
-                    android:id="@+id/floatingActionButton"
-                    android:layout_alignRight="@+id/imageview_account_profile" />
+                    android:id="@+id/fab_profile"
+                    android:layout_alignRight="@+id/ivProfile" />
 
             </RelativeLayout>
-
-
         </RelativeLayout>
     </ScrollView>
 
