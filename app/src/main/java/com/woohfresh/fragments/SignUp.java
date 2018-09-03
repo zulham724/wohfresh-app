@@ -117,6 +117,8 @@ public class SignUp extends Fragment implements Validator.ValidationListener{
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                SignIn navSuccess = new SignIn();
+                navSuccess.navSuccess();
             }
         });
 

@@ -51,7 +51,7 @@ import com.woohfresh.App;
 import com.woohfresh.BuildConfig;
 import com.woohfresh.R;
 import com.woohfresh.activity.ForgotPasswordActivity;
-import com.woohfresh.activity.MyProfileActivity;
+import com.woohfresh.activity.MainActivity;
 import com.woohfresh.data.local.Datas;
 import com.woohfresh.models.api.POauth;
 import com.woohfresh.models.api.RGlobal;
@@ -62,6 +62,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.woohfresh.App.subMail;
 import static com.woohfresh.data.local.Datas.IS_LANGUAGE;
 
 /**
@@ -213,7 +214,8 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                         Prefs.putString(Datas.OAUTH_REFRESH_TOKEN, user.getRefreshToken());
                         Prefs.putString(Datas.IS_LOGIN, "1");
                         App.TShort("success");
-                        startActivity(new Intent(getActivity(), MyProfileActivity.class));
+                        navSuccess();
+                        Prefs.putString(Datas.USER_NAME, subMail(mEmail.getText().toString()));
                     }
 
                     @Override
@@ -265,7 +267,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
             Prefs.putString(Datas.APP_SOSMED_ID, idSosmed);
             Prefs.putString(Datas.APP_SOSMED_TOKEN, idToken);
             App.TShort("success :" + account.getDisplayName());
-            startActivity(new Intent(getActivity(), MyProfileActivity.class));
+            navSuccess();
             Log.d("reqGoogle", idToken + "\n" + idSosmed);
         } else {
             // Signed out, show unauthenticated UI.
@@ -338,13 +340,13 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
         if (user != null) {
 //            requestLoginSosmed(idSosmedFB, idTokenFB, "2");
             App.TShort("success");
-            startActivity(new Intent(getActivity(), MyProfileActivity.class));
+            navSuccess();
         } else {
 //            Toast.makeText(mContext, "Silahkan isi data anda untuk melanjutkan", Toast.LENGTH_SHORT).show();
 //            startActivity(new Intent(getApplicationContext(), SignUpSosmed.class));
 //            finish();
             App.TShort("success");
-            startActivity(new Intent(getActivity(), MyProfileActivity.class));
+            navSuccess();
         }
     }
 
@@ -358,6 +360,14 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
     public void onStart() {
         super.onStart();
         signOut();
+    }
+
+    public void navSuccess(){
+        Intent i = new Intent(getActivity(), MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        getActivity().finish();
     }
 
 }

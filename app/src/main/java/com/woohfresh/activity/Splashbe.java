@@ -8,7 +8,16 @@ import android.text.Html;
 import android.util.TypedValue;
 import android.widget.TextView;
 
+import com.pixplicity.easyprefs.library.Prefs;
+import com.woohfresh.App;
 import com.woohfresh.R;
+import com.woohfresh.data.local.Datas;
+import com.woohfresh.models.api.GSecret;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+
+import static com.woohfresh.data.local.Datas.IS_LOGIN;
 
 public class Splashbe extends AppCompatActivity {
 
@@ -22,8 +31,13 @@ public class Splashbe extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                startActivity(new Intent(getApplicationContext(),AuthActivity.class));
-                finish();
+                if("1".equals(Prefs.getString(IS_LOGIN,""))) {
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                }else {
+                    startActivity(new Intent(getApplicationContext(), AuthActivity.class));
+                    finish();
+                }
             }
         }, 1000);
     }
