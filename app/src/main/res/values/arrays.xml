@@ -5,4 +5,16 @@
         <item>English</item>
         <item>Indonesian</item>
     </string-array>
+
+    <string-array name="arr_profile_state">
+        <item>state</item>
+    </string-array>
+
+    <string-array name="arr_profile_city">
+        <item>city</item>
+    </string-array>
+
+    <string-array name="arr_profile_subdistrict">
+        <item>subdistrict</item>
+    </string-array>
 </resources>

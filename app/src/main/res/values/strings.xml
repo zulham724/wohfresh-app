@@ -1,6 +1,31 @@
 <resources>
     <string name="app_name" translatable="false">WoohFresh</string>
 
+    <!--drawer-->
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="openDrawer" translatable="false">open_drawer</string>
+    <string name="closeDrawer" translatable="false">close_drawer</string>
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_home" translatable="false">Home</string>
+    <string name="nav_fruits" translatable="false">Fruits</string>
+    <string name="nav_recipes" translatable="false">Recipes</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_about_us">About Us</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>Home</item>
+        <item>Fruits</item>
+        <item>Recipes</item>
+        <item>Settings</item>
+    </string-array>
+
+    <string name="activity_title_about_us">About Us</string>
+    <string name="activity_title_privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
     <!--setting-->
     <string name="setting_lang">Choose Language</string>
     <string name="setting_lang_change">Change</string>
@@ -25,4 +50,29 @@
 
     <string name="err_server">Connection failed</string>
     <string name="err_blank">Please fill the field</string>
+    
+    <!--profile edit-->
+    <string name="profile_fullname">Full Name</string>
+    <string name="profile_gender">Gender</string>
+    <string name="profile_dob">Date of Birth</string>
+    <string name="profile_phone">Cell Phone Number</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_password">Password</string>
+    <string name="profile_password_re">Re-type Password</string>
+    <string name="profile_state">Pick your state</string>
+    <string name="profile_city">Pick your city</string>
+    <string name="profile_subdistrict">Pick your subdistrict</string>
+    <string name="profile_address">Address details</string>
+    <string name="profile_female">Female</string>
+    <string name="profile_male">Male</string>
+
+    <!--action-->
+    <string name="act_save">Save</string>
+
+    <!--dummy-->
+    <string name="dev" translatable="false"><![CDATA[<b><font color=#d50000>&lt;/</font><font color=#64dd17>dev</font><font color=#d50000>></font></b>]]></string>
+
+    <string name="profile_prompt_state">Choose a state</string>
+    <string name="profile_prompt_city">Choose a city</string>
+    <string name="profile_prompt_subdistrict">Choose a subdistrict</string>
 </resources>
