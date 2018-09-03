@@ -450,4 +450,10 @@ public class App extends Application {
         mActivity.recreate();
     }
 
+    public static String subMail(String mail){
+        int index = mail.indexOf('@');
+        String result = mail.substring(0,index);
+        return result;
+    }
+
 }
