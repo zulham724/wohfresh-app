@@ -37,6 +37,8 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static com.woohfresh.data.local.Datas.IS_LOGIN;
+
 public class AuthActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -45,6 +47,8 @@ public class AuthActivity extends AppCompatActivity {
 
     private CallbackManager mCallbackManager;
 
+    App.LoadingPrimary pd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +56,7 @@ public class AuthActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        pd = new App.LoadingPrimary(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         TextView title = (TextView) toolbar.findViewById(R.id.toolbar_title);
         title.setText(Html.fromHtml(getString(R.string.tv_style_app_title)));
@@ -69,6 +74,30 @@ public class AuthActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         initSecret();
+    }
+
+    private void initSecret() {
+        pd.show();
+        App.mApiService.gSecret().enqueue(new Callback<GSecret>() {
+            @Override
+            public void onResponse(Call<GSecret> call, retrofit2.Response<GSecret> response) {
+                pd.dismiss();
+                if (response.isSuccessful()) {
+                    Prefs.putString(Datas.APP_CLIENT_ID, String.valueOf(response.body().getId()));
+                    Prefs.putString(Datas.APP_CLIENT_SECRET, response.body().getSecret());
+                } else {
+                    App.TShort(getString(R.string.err_server));
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GSecret> call, Throwable t) {
+                pd.dismiss();
+                App.TShort(t.getMessage());
+            }
+        });
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -119,26 +148,6 @@ public class AuthActivity extends AppCompatActivity {
                 default:
                     return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void initSecret() {
-        App.mApiService.gSecret().enqueue(new Callback<GSecret>() {
-            @Override
-            public void onResponse(Call<GSecret> call, retrofit2.Response<GSecret> response) {
-                if (response.isSuccessful()) {
-                    Prefs.putString(Datas.APP_CLIENT_ID, String.valueOf(response.body().getId()));
-                    Prefs.putString(Datas.APP_CLIENT_SECRET, response.body().getSecret());
-                } else {
-                    App.TShort(getString(R.string.err_server));
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<GSecret> call, Throwable t) {
-                App.TShort(t.getMessage());
-            }
-        });
     }
 
     @Override
