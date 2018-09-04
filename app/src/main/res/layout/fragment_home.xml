@@ -22,11 +22,49 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/d_header" />
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:src="@drawable/d_home_menu" />
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_recipes"
+                    android:text="@string/home_menu_recipes"/>
+
+                <TextView
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_recipes"
+                    android:text="@string/home_menu_shop"/>
+
+                <TextView
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_recipes"
+                    android:text="@string/home_menu_price"/>
+
+                <TextView
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/ic_recipes"
+                    android:text="@string/home_menu_new"/>
+
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"

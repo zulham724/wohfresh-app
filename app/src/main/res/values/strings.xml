@@ -65,6 +65,12 @@
     <string name="profile_address">Address details</string>
     <string name="profile_female">Female</string>
     <string name="profile_male">Male</string>
+    
+    <!--home menu-->
+    <string name="home_menu_recipes">Recipes</string>
+    <string name="home_menu_shop">Shop</string>
+    <string name="home_menu_price">Special Price</string>
+    <string name="home_menu_new">New</string>
 
     <!--action-->
     <string name="act_save">Save</string>
