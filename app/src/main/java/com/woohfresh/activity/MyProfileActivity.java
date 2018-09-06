@@ -14,21 +14,41 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.mobsandgeeks.saripaar.Validator;
+import com.pixplicity.easyprefs.library.Prefs;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.woohfresh.App;
 import com.woohfresh.R;
+import com.woohfresh.adapter.MyAdapterSpinnerRegion;
+import com.woohfresh.data.sources.remote.api.Apis;
+import com.woohfresh.models.api.RGlobal;
+import com.woohfresh.models.api.region.city.DaftarKecamatanItem;
+import com.woohfresh.models.api.region.city.GCity;
+import com.woohfresh.models.api.region.state.GState;
+import com.woohfresh.models.api.region.state.SemuaprovinsiItem;
+import com.woohfresh.models.api.region.subdistrict.GSubdistrict;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +67,16 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
     @BindView(R.id.etProfileDob)
     EditText etDob;
 
+    @BindView(R.id.profileSpState)
+    Spinner spState;
+    @BindView(R.id.profileSpCity)
+    Spinner spCity;
+    @BindView(R.id.profileSpSubdistrict)
+    Spinner spSub;
+    MyAdapterSpinnerRegion mySpinnerAdapterState;
+    MyAdapterSpinnerRegion mySpinnerAdapterCity;
+    MyAdapterSpinnerRegion mySpinnerAdapterSub;
+
     @BindView(R.id.ivProfile)
     ImageView ivPhotos;
 
@@ -59,6 +89,21 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
     Bitmap bitmap;
     String pathAvatar = "";
     RequestOptions requestOptions = new RequestOptions();
+    String selectedState, selectedStateId, selectedCity, selectedCityId, selectedSub, selectedSubId;
+    ArrayList<String> listState;
+    ArrayList<String> listStateId;
+    ArrayList<String> listCity;
+    ArrayList<String> listCityId;
+    ArrayList<String> listSub;
+    ArrayList<String> listSubId;
+
+    @OnClick(R.id.btnSave)
+    public void ocSave() {
+//        App.TShort(selectedStateId+" "+selectedState);
+    }
+
+    @BindView(R.id.profileSpStateStatic)
+    Spinner spStateStatic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +161,241 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                 askForPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, PICK_IMAGE);
             }
         });
+
+        initSpinnerUI();
+        initSpinnerDefault();
+        initSpinnerState();
+
+        spStateStatic.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                spStateStatic.setVisibility(View.GONE);
+                spState.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+
+        spState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(null != spState.getSelectedView().findViewById(R.id.tvRegionId)) {
+                    selectedStateId = ((TextView) (spState.getSelectedView().findViewById(R.id.tvRegionId))).getText().toString();
+                    selectedState = ((TextView) (spState.getSelectedView().findViewById(R.id.tvRegionName))).getText().toString();
+                    if (listCity.size() > 0) {
+                        listCity.clear();
+                        listCityId.clear();
+                        initSpinnerCity(selectedStateId);
+                    } else {
+                        initSpinnerCity(selectedStateId);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (null != spCity.getSelectedView().findViewById(R.id.tvRegionId)) {
+                    selectedCityId = ((TextView) (spCity.getSelectedView().findViewById(R.id.tvRegionId))).getText().toString();
+                    selectedCity = ((TextView) (spCity.getSelectedView().findViewById(R.id.tvRegionName))).getText().toString();
+                    if (listCity.size() > 0) {
+                        listCity.clear();
+                        listCityId.clear();
+                        initSpinnerSub(selectedCityId);
+                    } else {
+                        initSpinnerSub(selectedCityId);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spSub.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (null != spSub.getSelectedView().findViewById(R.id.tvRegionId)) {
+                    selectedSubId = ((TextView) (spSub.getSelectedView().findViewById(R.id.tvRegionId))).getText().toString();
+                    selectedSub = ((TextView) (spSub.getSelectedView().findViewById(R.id.tvRegionName))).getText().toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void initSpinnerDefault() {
+
+        listCity.add(0, getString(R.string.profile_prompt_city));
+        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this, R.layout.my_spinner_simple, listCity);
+        cityAdapter.setDropDownViewResource(R.layout.my_spinner_simple);
+        spCity.setAdapter(cityAdapter);
+
+        listSub.add(0, getString(R.string.profile_prompt_subdistrict));
+        ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(this, R.layout.my_spinner_simple, listSub);
+        subAdapter.setDropDownViewResource(R.layout.my_spinner_simple);
+        spSub.setAdapter(subAdapter);
+    }
+
+    private void initSpinnerUI() {
+        listState = new ArrayList<String>();
+        listStateId = new ArrayList<String>();
+        listCity = new ArrayList<String>();
+        listCityId = new ArrayList<String>();
+        listSub = new ArrayList<String>();
+        listSubId = new ArrayList<String>();
+    }
+
+    private void initSpinnerState() {
+        AndroidNetworking.get(Apis.URL_REGION_STATE)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsObject(GState.class, new ParsedRequestListener<GState>() {
+                    @Override
+                    public void onResponse(GState response) {
+                        List<SemuaprovinsiItem> provinsi = response.getSemuaprovinsi();
+
+                        for (int i = 0; i < provinsi.size(); i++) {
+                            listState.add(provinsi.get(i).getNama());
+                            listStateId.add(provinsi.get(i).getId());
+                        }
+
+                        String[] saName = new String[listState.size()];
+                        saName = listState.toArray(saName);
+
+                        String[] saId = new String[listStateId.size()];
+                        saId = listStateId.toArray(saId);
+
+                        mySpinnerAdapterState = new MyAdapterSpinnerRegion
+                                (getApplicationContext(), saId, saName);
+                        spState.setAdapter(mySpinnerAdapterState);
+                        mySpinnerAdapterState.setNotifyOnChange(true);
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        if (error.getErrorCode() != 0) {
+                            Log.d(TAG, "onError errorCode : " + error.getErrorCode());
+                            Log.d(TAG, "onError errorBody : " + error.getErrorBody());
+                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+                            // get parsed error object (If ApiError is your class)
+                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
+                            App.TShort(apiError.getError());
+                        } else {
+                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+                        }
+                    }
+                });
+    }
+
+    private void initSpinnerCity(String idProvinsi) {
+        pd.show();
+        AndroidNetworking.get(Apis.URL_REGION_STATE + "/" + idProvinsi + "/kabupaten")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsObject(GCity.class, new ParsedRequestListener<GCity>() {
+                    @Override
+                    public void onResponse(GCity response) {
+                        pd.dismiss();
+                        List<DaftarKecamatanItem> kecamatan = response.getDaftarKecamatan();
+                        if (null != kecamatan) {
+                            listCity.clear();
+                            listCityId.clear();
+                            for (int i = 0; i < kecamatan.size(); i++) {
+                                listCity.add(kecamatan.get(i).getNama());
+                                listCityId.add(kecamatan.get(i).getId());
+                            }
+
+                            String[] saName = new String[listCity.size()];
+                            saName = listCity.toArray(saName);
+
+                            String[] saId = new String[listCityId.size()];
+                            saId = listCityId.toArray(saId);
+
+                            mySpinnerAdapterCity = new MyAdapterSpinnerRegion
+                                    (getApplicationContext(), saId, saName);
+                            spCity.setAdapter(mySpinnerAdapterCity);
+                            mySpinnerAdapterCity.setNotifyOnChange(true);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        pd.dismiss();
+                        // handle error
+                        if (error.getErrorCode() != 0) {
+                            Log.d(TAG, "onError errorCode : " + error.getErrorCode());
+                            Log.d(TAG, "onError errorBody : " + error.getErrorBody());
+                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+                            // get parsed error object (If ApiError is your class)
+                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
+                            App.TShort(apiError.getError());
+                        } else {
+                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+                        }
+                    }
+                });
+    }
+
+    private void initSpinnerSub(String idKab) {
+        pd.show();
+        AndroidNetworking.get(Apis.URL_REGION_STATE + "/kabupaten/" + idKab + "/kecamatan")
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsObject(GSubdistrict.class, new ParsedRequestListener<GSubdistrict>() {
+                    @Override
+                    public void onResponse(GSubdistrict response) {
+                        pd.dismiss();
+                        List<com.woohfresh.models.api.region.subdistrict.DaftarKecamatanItem> kecamatan = response.getDaftarKecamatan();
+
+                        listSub.clear();
+                        listSubId.clear();
+                        for (int i = 0; i < kecamatan.size(); i++) {
+                            listSub.add(kecamatan.get(i).getNama());
+                            listSubId.add(kecamatan.get(i).getId());
+                        }
+
+                        String[] saName = new String[listSub.size()];
+                        saName = listSub.toArray(saName);
+
+                        String[] saId = new String[listSubId.size()];
+                        saId = listSubId.toArray(saId);
+
+                        mySpinnerAdapterSub = new MyAdapterSpinnerRegion
+                                (getApplicationContext(), saId, saName);
+                        spSub.setAdapter(mySpinnerAdapterSub);
+                        mySpinnerAdapterSub.setNotifyOnChange(true);
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        pd.dismiss();
+                        // handle error
+                        if (error.getErrorCode() != 0) {
+                            Log.d(TAG, "onError errorCode : " + error.getErrorCode());
+                            Log.d(TAG, "onError errorBody : " + error.getErrorBody());
+                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+                            // get parsed error object (If ApiError is your class)
+                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
+                            App.TShort(apiError.getError());
+                        } else {
+                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+                        }
+                    }
+                });
     }
 
     @Override
