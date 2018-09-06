@@ -7,6 +7,8 @@ import com.woohfresh.BuildConfig;
  */
 
 public class Apis {
+    public static final String BASE_URL_REGION = "http://dev.farizdotid.com/api/daerahindonesia/";
+    public static final String URL_REGION_STATE = BASE_URL_REGION + "provinsi";
     public static final String BASE_URL = BuildConfig.SERVER_URL;
     public static final String BASE_URL_API = BASE_URL + "api/";
     public static final String BASE_URL_OAUTH = BASE_URL + "oauth/";
