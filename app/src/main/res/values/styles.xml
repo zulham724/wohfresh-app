@@ -45,4 +45,10 @@
         <item name="android:background">@drawable/my_btn_sign_up_success</item>
     </style>
 
+    <style name="mySpinnerState" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>
