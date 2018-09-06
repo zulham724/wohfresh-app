@@ -37,6 +37,7 @@
                         android:layout_height="wrap_content">
 
                         <EditText
+                            android:focusable="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/profile_fullname"
@@ -146,11 +147,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_spinner_region">
+                        <Spinner
+                            style="@style/mySpinnerState"
+                            android:id="@+id/profileSpStateStatic"
+                            android:entries="@array/arr_profile_state"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
                     <Spinner
+                        android:visibility="gone"
+                        android:id="@+id/profileSpState"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:entries="@array/arr_profile_state"
-                        android:prompt="@string/profile_prompt_state" />
+                        android:layout_height="wrap_content"/>
                     </RelativeLayout>
 
                     <TextView
@@ -163,10 +170,9 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_spinner_region">
                         <Spinner
+                            android:id="@+id/profileSpCity"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/arr_profile_city"
-                            android:prompt="@string/profile_prompt_city" />
+                            android:layout_height="wrap_content" />
                     </RelativeLayout>
 
                     <TextView
@@ -179,10 +185,9 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_spinner_region">
                         <Spinner
+                            android:id="@+id/profileSpSubdistrict"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/arr_profile_subdistrict"
-                            android:prompt="@string/profile_prompt_subdistrict" />
+                            android:layout_height="wrap_content" />
                     </RelativeLayout>
 
                     <TextView
@@ -206,6 +211,7 @@
                 </LinearLayout>
 
                 <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btnSave"
                     android:background="@color/colorPrimary"
                     android:layout_alignParentBottom="true"
                     android:layout_width="match_parent"
