@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,9 +22,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.R;
 import com.woohfresh.fragments.CommonFragment;
+import com.woohfresh.fragments.FruitsFragment;
 import com.woohfresh.fragments.HomeFragment;
+import com.woohfresh.fragments.SettingsFragment;
 
-import static com.woohfresh.data.local.Datas.USER_NAME;
+import static com.woohfresh.data.local.Constants.USER_NAME;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -182,13 +185,13 @@ public class MainActivity extends AppCompatActivity {
                 HomeFragment homeFragment = new HomeFragment();
                 return homeFragment;
             case 1:
-                CommonFragment fruitsFragment = new CommonFragment();
+                FruitsFragment fruitsFragment = new FruitsFragment();
                 return fruitsFragment;
             case 2:
                 CommonFragment recipesFragment = new CommonFragment();
                 return recipesFragment;
             case 3:
-                CommonFragment settingsFragment = new CommonFragment();
+                SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:
                 return new HomeFragment();
@@ -289,5 +292,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+
+        // show menu only when home fragment is selected
+        if (navItemIndex == 0) {
+            getMenuInflater().inflate(R.menu.menu_home, menu);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.navFind) {
+            startActivity(new Intent(this,SearchActivity.class));
+            return true;
+        }
+
+        // user is in notifications fragment
+        // and selected 'Mark all as Read'
+//        if (id == R.id.action_mark_all_read) {
+//            Toast.makeText(getApplicationContext(), "All notifications marked as read!", Toast.LENGTH_LONG).show();
+//        }
+//
+//        // user is in notifications fragment
+//        // and selected 'Clear All'
+//        if (id == R.id.action_clear_notifications) {
+//            Toast.makeText(getApplicationContext(), "Clear all notifications!", Toast.LENGTH_LONG).show();
+//        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

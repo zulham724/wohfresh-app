@@ -1,4 +1,7 @@
 <resources>
+
+    <!--creatorbe-->
+    <!--https://asrt.gluege.boerde.de-->
     <string name="app_name" translatable="false">WoohFresh</string>
 
     <!--drawer-->
@@ -8,9 +11,9 @@
     <string name="closeDrawer" translatable="false">close_drawer</string>
 
     <!-- Navigation Drawer menu labels -->
-    <string name="nav_home" translatable="false">Home</string>
-    <string name="nav_fruits" translatable="false">Fruits</string>
-    <string name="nav_recipes" translatable="false">Recipes</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_fruits">Fruits</string>
+    <string name="nav_recipes">Recipes</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_about_us">About Us</string>
 
@@ -22,6 +25,24 @@
         <item>Settings</item>
     </string-array>
 
+    <string-array name="lang_select">
+        <item>English</item>
+        <item>Indonesian</item>
+    </string-array>
+
+    <string-array name="arr_profile_state">
+        <item>@string/profile_prompt_state</item>
+    </string-array>
+
+    <string-array name="arr_settings_title">
+        <item>@string/set_lang_title</item>
+        <item>@string/set_exit_t</item>
+    </string-array>
+    <string-array name="arr_settings_sub">
+        <item>@string/set_lang_desc</item>
+        <item>@string/set_exit_s</item>
+    </string-array>
+
     <string name="activity_title_about_us">About Us</string>
     <string name="activity_title_privacy_policy">Privacy Policy</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -30,6 +51,10 @@
     <string name="setting_lang">Choose Language</string>
     <string name="setting_lang_change">Change</string>
     <string name="setting_cancel">Cancel</string>
+    <string name="set_lang_title">Language</string>
+    <string name="set_lang_desc">Change app language</string>
+    <string name="set_exit_t">Exit</string>
+    <string name="set_exit_s">Log out account</string>
 
     <string name="tv_style_app_title" translatable="false"><![CDATA[<font color=#dd2c00>wooh</font><font color=#FFFFFF>fresh</font>]]></string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
@@ -42,15 +67,17 @@
     <string name="login_password">Password</string>
     <string name="login_password_re">Re-type password</string>
     <string name="login_no_acc"><![CDATA[Does not have an account <font color=#0D9D59><b>SIGN UP</b></font> now]]></string>
+    <string name="login_no_acc_in" translatable="false"><![CDATA[Tidak punya akun <font color=#0D9D59><b>DAFTAR</b></font> sekarang]]></string>
 
     <string name="signup">Register</string>
     <string name="signup_term"><![CDATA[By signing up, you agree to our <font color=#0D9D59>Term</font> and <font color=#0D9D59>Privacy Policy</font>]]></string>
+    <string name="signup_term_in" translatable="false"><![CDATA[Dengan mendaftar, anda setuju dengan <font color=#0D9D59>Term</font> dan <font color=#0D9D59>Privacy Policy</font>]]> kami</string>
     <string name="signup_success">Thank you for registering!</string>
     <string name="signup_success_tag">A confirmation has been sent to your registered email address.\nPlease check our email in your mailbox and follow the\ninstruction to activate your account.</string>
 
     <string name="err_server">Connection failed</string>
     <string name="err_blank">Please fill the field</string>
-    
+
     <!--profile edit-->
     <string name="profile_fullname">Full Name</string>
     <string name="profile_gender">Gender</string>
@@ -65,7 +92,7 @@
     <string name="profile_address">Address details</string>
     <string name="profile_female">Female</string>
     <string name="profile_male">Male</string>
-    
+
     <!--home menu-->
     <string name="home_menu_recipes">Recipes</string>
     <string name="home_menu_shop">Shop</string>
@@ -74,6 +101,8 @@
 
     <!--action-->
     <string name="act_save">Save</string>
+    <string name="act_clear">Clear</string>
+    <string name="act_ok">Ok</string>
 
     <!--dummy-->
     <string name="dev" translatable="false"><![CDATA[<b><font color=#d50000>&lt;/</font><font color=#64dd17>dev</font><font color=#d50000>></font></b>]]></string>
@@ -81,4 +110,10 @@
     <string name="profile_prompt_state">Choose a state</string>
     <string name="profile_prompt_city">Choose a city</string>
     <string name="profile_prompt_subdistrict">Choose a subdistrict</string>
+
+    <!--search-->
+    <string name="search_tag">Looking for something ?</string>
+    <string name="search_type1">Products</string>
+    <string name="search_type2">Recipes</string>
+    <string name="search_list_title">Recent Search List</string>
 </resources>

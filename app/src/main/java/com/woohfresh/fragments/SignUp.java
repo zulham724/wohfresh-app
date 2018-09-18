@@ -29,11 +29,9 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.App;
-import com.woohfresh.BuildConfig;
 import com.woohfresh.R;
-import com.woohfresh.data.local.Datas;
+import com.woohfresh.data.local.Constants;
 import com.woohfresh.data.sources.remote.api.Apis;
-import com.woohfresh.models.api.POauth;
 import com.woohfresh.models.api.PSignUp;
 import com.woohfresh.models.api.RGlobal;
 
@@ -141,11 +139,11 @@ public class SignUp extends Fragment implements Validator.ValidationListener{
                     @Override
                     public void onResponse(PSignUp user) {
                         pd.dismiss();
-                        Prefs.putString(Datas.USER_ROLE_ID, String.valueOf(user.getRoleId()));
-                        Prefs.putString(Datas.USER_NAME, String.valueOf(user.getName()));
-                        Prefs.putString(Datas.USER_EMAIL,user.getEmail());
-                        Prefs.putString(Datas.USER_ID, String.valueOf(user.getId()));
-                        Prefs.putString(Datas.IS_LOGIN,"1");
+                        Prefs.putString(Constants.USER_ROLE_ID, String.valueOf(user.getRoleId()));
+                        Prefs.putString(Constants.USER_NAME, String.valueOf(user.getName()));
+                        Prefs.putString(Constants.USER_EMAIL,user.getEmail());
+                        Prefs.putString(Constants.USER_ID, String.valueOf(user.getId()));
+                        Prefs.putString(Constants.IS_LOGIN,"1");
                         dialogSuccess();
                     }
                     @Override

@@ -17,27 +17,18 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.App;
 import com.woohfresh.R;
-import com.woohfresh.data.local.Datas;
-import com.woohfresh.data.sources.remote.api.ApiService;
-import com.woohfresh.data.sources.remote.api.Apis;
 import com.woohfresh.fragments.SignIn;
 import com.woohfresh.fragments.SignUp;
-import com.woohfresh.models.api.GSecret;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
 
-import static com.woohfresh.data.local.Datas.IS_LOGIN;
+import static com.woohfresh.data.local.Constants.IS_LOGIN;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -53,6 +44,11 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        if("1".equals(Prefs.getString(IS_LOGIN,""))) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            finish();
+        }
 
         ButterKnife.bind(this);
 
@@ -72,32 +68,6 @@ public class AuthActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        initSecret();
-    }
-
-    private void initSecret() {
-        pd.show();
-        App.mApiService.gSecret().enqueue(new Callback<GSecret>() {
-            @Override
-            public void onResponse(Call<GSecret> call, retrofit2.Response<GSecret> response) {
-                pd.dismiss();
-                if (response.isSuccessful()) {
-                    Prefs.putString(Datas.APP_CLIENT_ID, String.valueOf(response.body().getId()));
-                    Prefs.putString(Datas.APP_CLIENT_SECRET, response.body().getSecret());
-                } else {
-                    App.TShort(getString(R.string.err_server));
-                    finish();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<GSecret> call, Throwable t) {
-                pd.dismiss();
-                App.TShort(t.getMessage());
-            }
-        });
     }
 
     private void setupViewPager(ViewPager viewPager) {

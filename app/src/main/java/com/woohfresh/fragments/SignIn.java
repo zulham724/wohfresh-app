@@ -18,13 +18,13 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -50,9 +50,9 @@ import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.App;
 import com.woohfresh.BuildConfig;
 import com.woohfresh.R;
-import com.woohfresh.activity.ForgotPasswordActivity;
 import com.woohfresh.activity.MainActivity;
-import com.woohfresh.data.local.Datas;
+import com.woohfresh.data.local.Constants;
+import com.woohfresh.models.api.GSecret;
 import com.woohfresh.models.api.POauth;
 import com.woohfresh.models.api.RGlobal;
 
@@ -61,9 +61,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 import static com.woohfresh.App.subMail;
-import static com.woohfresh.data.local.Datas.IS_LANGUAGE;
+import static com.woohfresh.data.local.Constants.IS_LANGUAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -107,7 +109,8 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
 
     @OnClick(R.id.tvForgotPassword)
     public void ocFP() {
-        startActivity(new Intent(getActivity(), ForgotPasswordActivity.class));
+//        startActivity(new Intent(getActivity(), ForgotPasswordActivity.class));
+        Crashlytics.getInstance().crash(); // Force a crash
     }
 
     //    facebook
@@ -152,6 +155,32 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
         FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
         FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_RAW_RESPONSES);
         mCallbackManager = CallbackManager.Factory.create();
+
+        initSecret();
+    }
+
+    private void initSecret() {
+        pd.show();
+        App.mApiService.gSecret().enqueue(new Callback<GSecret>() {
+            @Override
+            public void onResponse(Call<GSecret> call, retrofit2.Response<GSecret> response) {
+                pd.dismiss();
+                if (response.isSuccessful()) {
+                    Prefs.putString(Constants.APP_CLIENT_ID, String.valueOf(response.body().getId()));
+                    Prefs.putString(Constants.APP_CLIENT_SECRET, response.body().getSecret());
+                } else {
+                    App.TShort(getString(R.string.err_server));
+                    getActivity().finish();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GSecret> call, Throwable t) {
+                pd.dismiss();
+                App.TShort(t.getMessage());
+            }
+        });
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -199,8 +228,8 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
         pd.show();
         AndroidNetworking.post(BuildConfig.SERVER_URL + "oauth/token")
                 .addBodyParameter("grant_type", "password")
-                .addBodyParameter("client_id", Prefs.getString(Datas.APP_CLIENT_ID, ""))
-                .addBodyParameter("client_secret", Prefs.getString(Datas.APP_CLIENT_SECRET, ""))
+                .addBodyParameter("client_id", Prefs.getString(Constants.APP_CLIENT_ID, ""))
+                .addBodyParameter("client_secret", Prefs.getString(Constants.APP_CLIENT_SECRET, ""))
                 .addBodyParameter("username", mEmail.getText().toString())
                 .addBodyParameter("password", mPass.getText().toString())
                 .build()
@@ -208,14 +237,14 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                     @Override
                     public void onResponse(POauth user) {
                         pd.dismiss();
-                        Prefs.putString(Datas.OAUTH_TOKEN_TYPE, user.getTokenType());
-                        Prefs.putString(Datas.OAUTH_EXPIRES_IN, String.valueOf(user.getExpiresIn()));
-                        Prefs.putString(Datas.OAUTH_ACCESS_TOKEN, user.getAccessToken());
-                        Prefs.putString(Datas.OAUTH_REFRESH_TOKEN, user.getRefreshToken());
-                        Prefs.putString(Datas.IS_LOGIN, "1");
+                        Prefs.putString(Constants.OAUTH_TOKEN_TYPE, user.getTokenType());
+                        Prefs.putString(Constants.OAUTH_EXPIRES_IN, String.valueOf(user.getExpiresIn()));
+                        Prefs.putString(Constants.OAUTH_ACCESS_TOKEN, user.getAccessToken());
+                        Prefs.putString(Constants.OAUTH_REFRESH_TOKEN, user.getRefreshToken());
+                        Prefs.putString(Constants.IS_LOGIN, "1");
                         App.TShort("success");
                         navSuccess();
-                        Prefs.putString(Datas.USER_NAME, subMail(mEmail.getText().toString()));
+                        Prefs.putString(Constants.USER_NAME, subMail(mEmail.getText().toString()));
                     }
 
                     @Override
@@ -264,8 +293,8 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
 
             String idToken = account.getIdToken();
             String idSosmed = account.getId();
-            Prefs.putString(Datas.APP_SOSMED_ID, idSosmed);
-            Prefs.putString(Datas.APP_SOSMED_TOKEN, idToken);
+            Prefs.putString(Constants.APP_SOSMED_ID, idSosmed);
+            Prefs.putString(Constants.APP_SOSMED_TOKEN, idToken);
             App.TShort("success :" + account.getDisplayName());
             navSuccess();
             Log.d("reqGoogle", idToken + "\n" + idSosmed);
@@ -304,8 +333,8 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
         if (token != null) {
             String idTokenFB = token.getToken();
             String idSosmedFB = token.getUserId();
-            Prefs.putString(Datas.APP_SOSMED_ID,idSosmedFB);
-            Prefs.putString(Datas.APP_SOSMED_TOKEN,idTokenFB);
+            Prefs.putString(Constants.APP_SOSMED_ID,idSosmedFB);
+            Prefs.putString(Constants.APP_SOSMED_TOKEN,idTokenFB);
             Log.e(TAG, "FB:token: " + token.getToken());
             Log.e(TAG, "FB:id: " + token.getUserId());
         }

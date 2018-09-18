@@ -21,6 +21,7 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.pixplicity.easyprefs.library.Prefs;
+import com.woohfresh.activity.AuthActivity;
 import com.woohfresh.data.sources.remote.api.ApiService;
 import com.woohfresh.data.sources.remote.api.Apis;
 
@@ -49,10 +51,10 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-import static com.woohfresh.data.local.Datas.APP_LANG;
-import static com.woohfresh.data.local.Datas.IS_LANGUAGE;
+import static com.woohfresh.data.local.Constants.APP_LANG;
+import static com.woohfresh.data.local.Constants.IS_LANGUAGE;
 
-public class App extends Application {
+public class App extends MultiDexApplication {
 
     public static String appVersion = BuildConfig.VERSION_NAME;
     private static Context appContext;
@@ -70,7 +72,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        MultiDex.install(this);
         appContext = this;
         new Prefs.Builder()
                 .setContext(this)
@@ -408,35 +409,32 @@ public class App extends Application {
 
         final Spinner spinner1 = (Spinner) dialogView.findViewById(R.id.spinner1);
         dialogBuilder.setTitle(activity.getString(R.string.setting_lang));
-        dialogBuilder.setPositiveButton(activity.getString(R.string.setting_lang_change), new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(activity.getString(R.string.act_ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 int position = spinner1.getSelectedItemPosition();
                 changeLang(activity, position);
             }
         });
-        dialogBuilder.setNegativeButton(activity.getString(R.string.setting_cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.dismiss();
-            }
-        });
+//        dialogBuilder.setNegativeButton(activity.getString(R.string.setting_cancel), new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int whichButton) {
+//                dialog.dismiss();
+//            }
+//        });
         AlertDialog b = dialogBuilder.create();
         b.show();
+        b.setCancelable(false);
         Prefs.putString(IS_LANGUAGE,"1");
     }
 
     public static void changeLang(Activity mActivity, int position) {
         switch (position) {
             case 0: //English
-                Prefs.putString(APP_LANG, "en");
+                Prefs.putInt(APP_LANG, 1);
                 setLangRecreate(mActivity, "en");
                 return;
             case 1: //Indonesia
-                Prefs.putString(APP_LANG, "in");
+                Prefs.putInt(APP_LANG, 0);
                 setLangRecreate(mActivity, "in");
-                return;
-            default: //By default set to english
-                Prefs.putString(APP_LANG, "en");
-                setLangRecreate(mActivity, "en");
                 return;
         }
     }
@@ -454,6 +452,24 @@ public class App extends Application {
         int index = mail.indexOf('@');
         String result = mail.substring(0,index);
         return result;
+    }
+
+    public static void intentFinish(Activity cx, Class cs){
+        Intent i = new Intent(cx,cs);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        cx.startActivity(i);
+        cx.finish();
+    }
+
+    public static void appExit(Activity activity){
+        Prefs.clear();
+        Prefs.putString(IS_LANGUAGE,"1");
+        intentFinish(activity,AuthActivity.class);
+    }
+
+    public static String toPercentage(float n){
+        return String.format("%.0f",n*100)+"%";
     }
 
 }

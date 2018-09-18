@@ -1,9 +1,9 @@
 package com.woohfresh.data.local;
 
-public class Datas {
+public class Constants {
 
-    public static final String IS_LOGIN = "";
-    public static final String IS_LANGUAGE = "";
+    public static final String IS_LOGIN = "IS_LOGIN";
+    public static final String IS_LANGUAGE = "IS_LANGUAGE";
     public static final String APP_LANG = "APP_LANG";
     public static final String APP_CLIENT_ID = "APP_CLIENT_ID";
     public static final String APP_CLIENT_SECRET = "APP_CLIENT_SECRET";
