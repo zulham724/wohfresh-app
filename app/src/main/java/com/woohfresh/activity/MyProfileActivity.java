@@ -32,18 +32,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.mobsandgeeks.saripaar.Validator;
-import com.pixplicity.easyprefs.library.Prefs;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.woohfresh.App;
 import com.woohfresh.R;
-import com.woohfresh.adapter.MyAdapterSpinnerRegion;
+import com.woohfresh.adapters.MyAdapterSpinnerRegion;
+import com.woohfresh.data.local.Constants;
 import com.woohfresh.data.sources.remote.api.Apis;
 import com.woohfresh.models.api.RGlobal;
-import com.woohfresh.models.api.region.city.DaftarKecamatanItem;
-import com.woohfresh.models.api.region.city.GCity;
-import com.woohfresh.models.api.region.state.GState;
-import com.woohfresh.models.api.region.state.SemuaprovinsiItem;
-import com.woohfresh.models.api.region.subdistrict.GSubdistrict;
+import com.woohfresh.models.api.region.wstate.GwState;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -71,8 +67,8 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
     Spinner spState;
     @BindView(R.id.profileSpCity)
     Spinner spCity;
-    @BindView(R.id.profileSpSubdistrict)
-    Spinner spSub;
+//    @BindView(R.id.profileSpSubdistrict)
+//    Spinner spSub;
     MyAdapterSpinnerRegion mySpinnerAdapterState;
     MyAdapterSpinnerRegion mySpinnerAdapterCity;
     MyAdapterSpinnerRegion mySpinnerAdapterSub;
@@ -203,13 +199,13 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                 if (null != spCity.getSelectedView().findViewById(R.id.tvRegionId)) {
                     selectedCityId = ((TextView) (spCity.getSelectedView().findViewById(R.id.tvRegionId))).getText().toString();
                     selectedCity = ((TextView) (spCity.getSelectedView().findViewById(R.id.tvRegionName))).getText().toString();
-                    if (listCity.size() > 0) {
-                        listCity.clear();
-                        listCityId.clear();
-                        initSpinnerSub(selectedCityId);
-                    } else {
-                        initSpinnerSub(selectedCityId);
-                    }
+//                    if (listCity.size() > 0) {
+//                        listCity.clear();
+//                        listCityId.clear();
+//                        initSpinnerSub(selectedCityId);
+//                    } else {
+//                        initSpinnerSub(selectedCityId);
+//                    }
                 }
             }
 
@@ -219,20 +215,20 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
             }
         });
 
-        spSub.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (null != spSub.getSelectedView().findViewById(R.id.tvRegionId)) {
-                    selectedSubId = ((TextView) (spSub.getSelectedView().findViewById(R.id.tvRegionId))).getText().toString();
-                    selectedSub = ((TextView) (spSub.getSelectedView().findViewById(R.id.tvRegionName))).getText().toString();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        spSub.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (null != spSub.getSelectedView().findViewById(R.id.tvRegionId)) {
+//                    selectedSubId = ((TextView) (spSub.getSelectedView().findViewById(R.id.tvRegionId))).getText().toString();
+//                    selectedSub = ((TextView) (spSub.getSelectedView().findViewById(R.id.tvRegionName))).getText().toString();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
     }
 
     private void initSpinnerDefault() {
@@ -245,7 +241,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
         listSub.add(0, getString(R.string.profile_prompt_subdistrict));
         ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(this, R.layout.my_spinner_simple, listSub);
         subAdapter.setDropDownViewResource(R.layout.my_spinner_simple);
-        spSub.setAdapter(subAdapter);
+//        spSub.setAdapter(subAdapter);
     }
 
     private void initSpinnerUI() {
@@ -257,18 +253,63 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
         listSubId = new ArrayList<String>();
     }
 
+//    private void initSpinnerState() {
+//        AndroidNetworking.get(Apis.URL_REGION_STATE)
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsObject(GState.class, new ParsedRequestListener<GState>() {
+//                    @Override
+//                    public void onResponse(GState response) {
+//                        List<SemuaprovinsiItem> provinsi = response.getSemuaprovinsi();
+//
+//                        for (int i = 0; i < provinsi.size(); i++) {
+//                            listState.add(provinsi.get(i).getNama());
+//                            listStateId.add(provinsi.get(i).getId());
+//                        }
+//
+//                        String[] saName = new String[listState.size()];
+//                        saName = listState.toArray(saName);
+//
+//                        String[] saId = new String[listStateId.size()];
+//                        saId = listStateId.toArray(saId);
+//
+//                        mySpinnerAdapterState = new MyAdapterSpinnerRegion
+//                                (getApplicationContext(), saId, saName);
+//                        spState.setAdapter(mySpinnerAdapterState);
+//                        mySpinnerAdapterState.setNotifyOnChange(true);
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError error) {
+//                        // handle error
+//                        if (error.getErrorCode() != 0) {
+//                            Log.d(TAG, "onError errorCode : " + error.getErrorCode());
+//                            Log.d(TAG, "onError errorBody : " + error.getErrorBody());
+//                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+//                            // get parsed error object (If ApiError is your class)
+//                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
+//                            App.TShort(apiError.getError());
+//                        } else {
+//                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+//                        }
+//                    }
+//                });
+//    }
+
     private void initSpinnerState() {
-        AndroidNetworking.get(Apis.URL_REGION_STATE)
+        AndroidNetworking.get(Apis.URL_STATE)
+                .addHeaders("Accept", "application/json")
+                .addHeaders("Authorization", Constants.VAL_AUTH)
                 .setPriority(Priority.HIGH)
                 .build()
-                .getAsObject(GState.class, new ParsedRequestListener<GState>() {
+                .getAsObjectList(GwState.class, new ParsedRequestListener<List<GwState>>() {
                     @Override
-                    public void onResponse(GState response) {
-                        List<SemuaprovinsiItem> provinsi = response.getSemuaprovinsi();
+                    public void onResponse(List<GwState> provinsi) {
 
                         for (int i = 0; i < provinsi.size(); i++) {
-                            listState.add(provinsi.get(i).getNama());
-                            listStateId.add(provinsi.get(i).getId());
+                            listState.add(provinsi.get(i).getName());
+                            listStateId.add(String.valueOf(provinsi.get(i).getId()));
                         }
 
                         String[] saName = new String[listState.size()];
@@ -303,20 +344,21 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
 
     private void initSpinnerCity(String idProvinsi) {
         pd.show();
-        AndroidNetworking.get(Apis.URL_REGION_STATE + "/" + idProvinsi + "/kabupaten")
+        AndroidNetworking.get(Apis.URL_CITY + idProvinsi)
+                .addHeaders("Accept", "application/json")
+                .addHeaders("Authorization", Constants.VAL_AUTH)
                 .setPriority(Priority.HIGH)
                 .build()
-                .getAsObject(GCity.class, new ParsedRequestListener<GCity>() {
+                .getAsObjectList(GwState.class, new ParsedRequestListener<List<GwState>>() {
                     @Override
-                    public void onResponse(GCity response) {
+                    public void onResponse(List<GwState> city) {
+
                         pd.dismiss();
-                        List<DaftarKecamatanItem> kecamatan = response.getDaftarKecamatan();
-                        if (null != kecamatan) {
                             listCity.clear();
                             listCityId.clear();
-                            for (int i = 0; i < kecamatan.size(); i++) {
-                                listCity.add(kecamatan.get(i).getNama());
-                                listCityId.add(kecamatan.get(i).getId());
+                            for (int i = 0; i < city.size(); i++) {
+                                listCity.add(city.get(i).getName());
+                                listCityId.add(String.valueOf(city.get(i).getId()));
                             }
 
                             String[] saName = new String[listCity.size()];
@@ -329,7 +371,6 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                                     (getApplicationContext(), saId, saName);
                             spCity.setAdapter(mySpinnerAdapterCity);
                             mySpinnerAdapterCity.setNotifyOnChange(true);
-                        }
                     }
 
                     @Override
@@ -350,53 +391,102 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                 });
     }
 
-    private void initSpinnerSub(String idKab) {
-        pd.show();
-        AndroidNetworking.get(Apis.URL_REGION_STATE + "/kabupaten/" + idKab + "/kecamatan")
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsObject(GSubdistrict.class, new ParsedRequestListener<GSubdistrict>() {
-                    @Override
-                    public void onResponse(GSubdistrict response) {
-                        pd.dismiss();
-                        List<com.woohfresh.models.api.region.subdistrict.DaftarKecamatanItem> kecamatan = response.getDaftarKecamatan();
+//    private void initSpinnerCity(String idProvinsi) {
+//        pd.show();
+//        AndroidNetworking.get(Apis.URL_REGION_STATE + "/" + idProvinsi + "/kabupaten")
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsObject(GCity.class, new ParsedRequestListener<GCity>() {
+//                    @Override
+//                    public void onResponse(GCity response) {
+//                        pd.dismiss();
+//                        List<DaftarKecamatanItem> kecamatan = response.getDaftarKecamatan();
+//                        if (null != kecamatan) {
+//                            listCity.clear();
+//                            listCityId.clear();
+//                            for (int i = 0; i < kecamatan.size(); i++) {
+//                                listCity.add(kecamatan.get(i).getNama());
+//                                listCityId.add(kecamatan.get(i).getId());
+//                            }
+//
+//                            String[] saName = new String[listCity.size()];
+//                            saName = listCity.toArray(saName);
+//
+//                            String[] saId = new String[listCityId.size()];
+//                            saId = listCityId.toArray(saId);
+//
+//                            mySpinnerAdapterCity = new MyAdapterSpinnerRegion
+//                                    (getApplicationContext(), saId, saName);
+//                            spCity.setAdapter(mySpinnerAdapterCity);
+//                            mySpinnerAdapterCity.setNotifyOnChange(true);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError error) {
+//                        pd.dismiss();
+//                        // handle error
+//                        if (error.getErrorCode() != 0) {
+//                            Log.d(TAG, "onError errorCode : " + error.getErrorCode());
+//                            Log.d(TAG, "onError errorBody : " + error.getErrorBody());
+//                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+//                            // get parsed error object (If ApiError is your class)
+//                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
+//                            App.TShort(apiError.getError());
+//                        } else {
+//                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+//                        }
+//                    }
+//                });
+//    }
 
-                        listSub.clear();
-                        listSubId.clear();
-                        for (int i = 0; i < kecamatan.size(); i++) {
-                            listSub.add(kecamatan.get(i).getNama());
-                            listSubId.add(kecamatan.get(i).getId());
-                        }
-
-                        String[] saName = new String[listSub.size()];
-                        saName = listSub.toArray(saName);
-
-                        String[] saId = new String[listSubId.size()];
-                        saId = listSubId.toArray(saId);
-
-                        mySpinnerAdapterSub = new MyAdapterSpinnerRegion
-                                (getApplicationContext(), saId, saName);
-                        spSub.setAdapter(mySpinnerAdapterSub);
-                        mySpinnerAdapterSub.setNotifyOnChange(true);
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        pd.dismiss();
-                        // handle error
-                        if (error.getErrorCode() != 0) {
-                            Log.d(TAG, "onError errorCode : " + error.getErrorCode());
-                            Log.d(TAG, "onError errorBody : " + error.getErrorBody());
-                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
-                            // get parsed error object (If ApiError is your class)
-                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getError());
-                        } else {
-                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
-                        }
-                    }
-                });
-    }
+//    private void initSpinnerSub(String idKab) {
+//        pd.show();
+//        AndroidNetworking.get(Apis.URL_REGION_STATE + "/kabupaten/" + idKab + "/kecamatan")
+//                .setPriority(Priority.HIGH)
+//                .build()
+//                .getAsObject(GSubdistrict.class, new ParsedRequestListener<GSubdistrict>() {
+//                    @Override
+//                    public void onResponse(GSubdistrict response) {
+//                        pd.dismiss();
+//                        List<com.woohfresh.models.api.region.subdistrict.DaftarKecamatanItem> kecamatan = response.getDaftarKecamatan();
+//
+//                        listSub.clear();
+//                        listSubId.clear();
+//                        for (int i = 0; i < kecamatan.size(); i++) {
+//                            listSub.add(kecamatan.get(i).getNama());
+//                            listSubId.add(kecamatan.get(i).getId());
+//                        }
+//
+//                        String[] saName = new String[listSub.size()];
+//                        saName = listSub.toArray(saName);
+//
+//                        String[] saId = new String[listSubId.size()];
+//                        saId = listSubId.toArray(saId);
+//
+//                        mySpinnerAdapterSub = new MyAdapterSpinnerRegion
+//                                (getApplicationContext(), saId, saName);
+//                        spSub.setAdapter(mySpinnerAdapterSub);
+//                        mySpinnerAdapterSub.setNotifyOnChange(true);
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError error) {
+//                        pd.dismiss();
+//                        // handle error
+//                        if (error.getErrorCode() != 0) {
+//                            Log.d(TAG, "onError errorCode : " + error.getErrorCode());
+//                            Log.d(TAG, "onError errorBody : " + error.getErrorBody());
+//                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+//                            // get parsed error object (If ApiError is your class)
+//                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
+//                            App.TShort(apiError.getError());
+//                        } else {
+//                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+//                        }
+//                    }
+//                });
+//    }
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {

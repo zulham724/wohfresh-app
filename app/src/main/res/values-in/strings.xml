@@ -41,7 +41,7 @@
     
     <string name="setting_lang">Pilih bahasa</string>
     <string name="setting_lang_change">Perubahan</string>
-    <string name="setting_cancel">Membatalkan</string>
+    <string name="setting_cancel">Batalkan</string>
     <string name="set_lang_title">Bahasa</string>
     <string name="set_lang_desc">Ubah bahasa aplikasi</string>
     <string name="set_exit_t">Keluar</string>

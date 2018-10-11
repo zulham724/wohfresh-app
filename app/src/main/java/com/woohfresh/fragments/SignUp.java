@@ -24,6 +24,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
@@ -63,12 +64,12 @@ public class SignUp extends Fragment implements Validator.ValidationListener{
     EditText mEmail;
 
     @NotEmpty
-    @Password
+    @Password(min = 6, scheme = Password.Scheme.ANY)
     @BindView(R.id.etSignupPassword)
     EditText mPass;
 
     @NotEmpty
-    @Password
+    @ConfirmPassword(messageResId = R.string.err_signin_password)
     @BindView(R.id.etSignupPasswordRe)
     EditText mPassRe;
 

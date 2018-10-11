@@ -1,26 +1,11 @@
-package com.woohfresh.models.api.products.state;
+package com.woohfresh.models.api.search.products;
 
 import java.util.List;
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("com.robohorse.robopojogenerator")
-public class GProductsState{
-
-	@SerializedName("quantity")
-	private int quantity;
-
-	@SerializedName("product_sales")
-	private List<ProductSalesItem> productSales;
-
-	@SerializedName("weight")
-	private int weight;
-
-	@SerializedName("created_at")
-	private String createdAt;
-
-	@SerializedName("product_images")
-	private List<ProductImagesItem> productImages;
+public class GSearch{
 
 	@SerializedName("badge")
 	private String badge;
@@ -30,6 +15,9 @@ public class GProductsState{
 
 	@SerializedName("product_translations")
 	private List<ProductTranslationsItem> productTranslations;
+
+	@SerializedName("quantity")
+	private int quantity;
 
 	@SerializedName("category_id")
 	private int categoryId;
@@ -43,54 +31,17 @@ public class GProductsState{
 	@SerializedName("sub_category_id")
 	private int subCategoryId;
 
-	@SerializedName("supplier")
-	private Supplier supplier;
+	@SerializedName("weight")
+	private int weight;
+
+	@SerializedName("created_at")
+	private String createdAt;
 
 	@SerializedName("id")
 	private int id;
 
 	@SerializedName("supplier_id")
 	private int supplierId;
-
-	public void setQuantity(int quantity){
-		this.quantity = quantity;
-	}
-
-	public int getQuantity(){
-		return quantity;
-	}
-
-	public void setProductSales(List<ProductSalesItem> productSales){
-		this.productSales = productSales;
-	}
-
-	public List<ProductSalesItem> getProductSales(){
-		return productSales;
-	}
-
-	public void setWeight(int weight){
-		this.weight = weight;
-	}
-
-	public int getWeight(){
-		return weight;
-	}
-
-	public void setCreatedAt(String createdAt){
-		this.createdAt = createdAt;
-	}
-
-	public String getCreatedAt(){
-		return createdAt;
-	}
-
-	public void setProductImages(List<ProductImagesItem> productImages){
-		this.productImages = productImages;
-	}
-
-	public List<ProductImagesItem> getProductImages(){
-		return productImages;
-	}
 
 	public void setBadge(String badge){
 		this.badge = badge;
@@ -114,6 +65,14 @@ public class GProductsState{
 
 	public List<ProductTranslationsItem> getProductTranslations(){
 		return productTranslations;
+	}
+
+	public void setQuantity(int quantity){
+		this.quantity = quantity;
+	}
+
+	public int getQuantity(){
+		return quantity;
 	}
 
 	public void setCategoryId(int categoryId){
@@ -148,12 +107,20 @@ public class GProductsState{
 		return subCategoryId;
 	}
 
-	public void setSupplier(Supplier supplier){
-		this.supplier = supplier;
+	public void setWeight(int weight){
+		this.weight = weight;
 	}
 
-	public Supplier getSupplier(){
-		return supplier;
+	public int getWeight(){
+		return weight;
+	}
+
+	public void setCreatedAt(String createdAt){
+		this.createdAt = createdAt;
+	}
+
+	public String getCreatedAt(){
+		return createdAt;
 	}
 
 	public void setId(int id){
@@ -175,20 +142,17 @@ public class GProductsState{
 	@Override
  	public String toString(){
 		return 
-			"GProductsState{" + 
-			"quantity = '" + quantity + '\'' + 
-			",product_sales = '" + productSales + '\'' + 
-			",weight = '" + weight + '\'' + 
-			",created_at = '" + createdAt + '\'' + 
-			",product_images = '" + productImages + '\'' + 
-			",badge = '" + badge + '\'' + 
+			"GSearch{" + 
+			"badge = '" + badge + '\'' + 
 			",unit = '" + unit + '\'' + 
 			",product_translations = '" + productTranslations + '\'' + 
+			",quantity = '" + quantity + '\'' + 
 			",category_id = '" + categoryId + '\'' + 
 			",updated_at = '" + updatedAt + '\'' + 
 			",group_id = '" + groupId + '\'' + 
 			",sub_category_id = '" + subCategoryId + '\'' + 
-			",supplier = '" + supplier + '\'' + 
+			",weight = '" + weight + '\'' + 
+			",created_at = '" + createdAt + '\'' + 
 			",id = '" + id + '\'' + 
 			",supplier_id = '" + supplierId + '\'' + 
 			"}";

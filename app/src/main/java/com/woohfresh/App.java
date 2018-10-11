@@ -18,6 +18,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Process;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.multidex.MultiDex;
@@ -91,6 +92,7 @@ public class App extends MultiDexApplication {
                 .addInterceptor(interceptor)
                 .build();
         AndroidNetworking.initialize(getApplicationContext(), client);
+        AndroidNetworking.enableLogging();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -143,7 +145,7 @@ public class App extends MultiDexApplication {
 
     //toast
     public static void TShort(String title) {
-        if (title.toLowerCase().contains("failed")) {
+        if (title.toLowerCase().contains("unable to resolve host")) {
             Toast.makeText(getAppContext(), getAppContext().getString(R.string.err_server), Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getAppContext(), title, Toast.LENGTH_SHORT).show();
@@ -425,6 +427,36 @@ public class App extends MultiDexApplication {
         b.setCancelable(false);
         Prefs.putString(IS_LANGUAGE,"1");
     }
+
+//    public static void myBackPressed(final Activity activity, final String message){
+//        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+//        alertDialogBuilder
+//                .setMessage(message)
+//                .setCancelable(false)
+//                .setPositiveButton(R.string.act_ok,
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                if(message.equals(activity.getString(R.string.))) {
+//                                    Prefs.remove("app_srv");
+//                                    Prefs.remove(APP_S);
+//                                    activity.moveTaskToBack(true);
+//                                    Process.killProcess(Process.myPid());
+//                                    System.exit(0);
+//                                }else {
+//                                    Prefs.clear();
+//                                    App.intentFinish(activity,MainActivity.class);
+//                                }
+//                            }
+//                        })
+//                .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        dialog.cancel();
+//                    }
+//                });
+//
+//        AlertDialog alertDialog = alertDialogBuilder.create();
+//        alertDialog.show();
+//    }
 
     public static void changeLang(Activity mActivity, int position) {
         switch (position) {

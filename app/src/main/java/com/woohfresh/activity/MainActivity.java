@@ -1,14 +1,28 @@
 package com.woohfresh.activity;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Process;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,15 +30,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.pixplicity.easyprefs.library.Prefs;
+import com.woohfresh.App;
 import com.woohfresh.R;
-import com.woohfresh.fragments.CommonFragment;
+import com.woohfresh.data.local.Constants;
+import com.woohfresh.data.sources.remote.api.Apis;
 import com.woohfresh.fragments.FruitsFragment;
 import com.woohfresh.fragments.HomeFragment;
+import com.woohfresh.fragments.RecipesFragment;
 import com.woohfresh.fragments.SettingsFragment;
+import com.woohfresh.models.api.search.state.GStateId;
+
+import java.util.List;
+import java.util.Locale;
 
 import static com.woohfresh.data.local.Constants.USER_NAME;
 
@@ -58,7 +84,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
 
-
+    //getCurrentLoc
+    private static final int REQUEST_LOCATION = 1;
+    LocationManager locationManager;
+    String lattitude, longitude;
+    App.LoadingPrimary pd;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mHandler = new Handler();
+        pd = new App.LoadingPrimary(this);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -92,6 +124,161 @@ public class MainActivity extends AppCompatActivity {
             CURRENT_TAG = TAG_HOME;
             loadHomeFragment();
         }
+
+//        ActivityCompat.requestPermissions(this,
+//                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+//
+//        initLocation();
+
+        if (CheckPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // you have permission go ahead
+            initLocation();
+        } else {
+            // you do not have permission go request runtime permissions
+            RequestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_LOCATION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
+
+        switch (permsRequestCode) {
+
+            case REQUEST_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // you have permission go ahead
+                    initLocation();
+                } else {
+                    // you do not have permission show toast.
+                    App.TShort("Unable to get product by location");
+                }
+                return;
+            }
+        }
+    }
+
+    public void RequestPermission(Activity thisActivity, String Permission, int Code) {
+        if (ContextCompat.checkSelfPermission(thisActivity,
+                Permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity,
+                    Permission)) {
+            } else {
+                ActivityCompat.requestPermissions(thisActivity,
+                        new String[]{Permission},
+                        Code);
+            }
+        }
+    }
+
+    public boolean CheckPermission(Context context, String Permission) {
+        if (ContextCompat.checkSelfPermission(context,
+                Permission) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void initLocation(){
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+        } else if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            getLocation();
+        }
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+
+        } else {
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            Location location1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Location location2 = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+
+            if (location != null) {
+                double latti = location.getLatitude();
+                double longi = location.getLongitude();
+                lattitude = String.valueOf(latti);
+                longitude = String.valueOf(longi);
+
+//                textView.setText("Your current location is"+ "\n" + "Lattitude = " + lattitude
+//                        + "\n" + "Longitude = " + longitude);
+                try {
+                    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocation(latti, longi, 1);
+                    getStateId(addresses.get(0).getAdminArea());
+//                    App.TShort(addresses.get(0).getAdminArea());
+                } catch (Exception e) {
+
+                }
+
+            } else if (location1 != null) {
+                double latti = location1.getLatitude();
+                double longi = location1.getLongitude();
+                lattitude = String.valueOf(latti);
+                longitude = String.valueOf(longi);
+
+//                textView.setText("Your current location is"+ "\n" + "Lattitude = " + lattitude
+//                        + "\n" + "Longitude = " + longitude);
+                try {
+                    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocation(latti, longi, 1);
+                    getStateId(addresses.get(0).getAdminArea());
+//                    App.TShort(addresses.get(0).getAdminArea());
+                } catch (Exception e) {
+
+                }
+
+
+            } else if (location2 != null) {
+                double latti = location2.getLatitude();
+                double longi = location2.getLongitude();
+                lattitude = String.valueOf(latti);
+                longitude = String.valueOf(longi);
+
+//                textView.setText("Your current location is"+ "\n" + "Lattitude = " + lattitude
+//                        + "\n" + "Longitude = " + longitude);
+                try {
+                    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocation(latti, longi, 1);
+                    getStateId(addresses.get(0).getAdminArea());
+//                    App.TShort(addresses.get(0).getAdminArea());
+                } catch (Exception e) {
+
+                }
+
+            }
+            else {
+                Toast.makeText(this, "Unable to Trace your location", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    protected void buildAlertMessageNoGps() {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Turn ON your location to get product by location")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 
     /***
@@ -118,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
         // loading header background image
         Glide.with(this)
                 .setDefaultRequestOptions(requestOptions)
-                .load(urlNavHeaderBg).into(imgNavHeaderBg);
+                .load(R.drawable.my_bg_nav_header).into(imgNavHeaderBg);
 
         // Loading profile image
         Glide.with(this)
@@ -188,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                 FruitsFragment fruitsFragment = new FruitsFragment();
                 return fruitsFragment;
             case 2:
-                CommonFragment recipesFragment = new CommonFragment();
+                RecipesFragment recipesFragment = new RecipesFragment();
                 return recipesFragment;
             case 3:
                 SettingsFragment settingsFragment = new SettingsFragment();
@@ -289,9 +476,31 @@ public class MainActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawers();
             return;
+        }else {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder
+                    .setTitle(getString(R.string.set_exit_t))
+                    .setMessage(getString(R.string.info_msg_exit))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.act_ok),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                        moveTaskToBack(true);
+                                        Process.killProcess(Process.myPid());
+                                        System.exit(0);
+                                }
+                            })
+                    .setNegativeButton(getString(R.string.setting_cancel), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
 
-        super.onBackPressed();
+//        super.onBackPressed();
     }
 
     @Override
@@ -332,5 +541,33 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getStateId(String stateId){
+//        App.TShort(stateId);
+        pd.show();
+        AndroidNetworking.get(Apis.URL_SEARCH_STATE+"{stateId}")
+                .addPathParameter("stateId", stateId)
+                .addHeaders("Accept", "application/json")
+                .addHeaders("Authorization", Constants.VAL_AUTH)
+                .setTag(this)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsObjectList(GStateId.class, new ParsedRequestListener<List<GStateId>>() {
+                    @Override
+                    public void onResponse(List<GStateId> rets) {
+                        // do anything with response
+                        for (GStateId ret : rets) {
+                            Prefs.putString(Constants.loc_state_id, String.valueOf(ret.getId()));
+                            pd.dismiss();
+                        }
+                    }
+                    @Override
+                    public void onError(ANError anError) {
+                        // handle error
+                        pd.dismiss();
+                        App.TShort(anError.getErrorDetail());
+                    }
+                });
     }
 }

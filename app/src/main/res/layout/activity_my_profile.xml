@@ -175,20 +175,20 @@
                             android:layout_height="wrap_content" />
                     </RelativeLayout>
 
-                    <TextView
-                        android:layout_margin="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/profile_subdistrict"/>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_spinner_region">
-                        <Spinner
-                            android:id="@+id/profileSpSubdistrict"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </RelativeLayout>
+                    <!--<TextView-->
+                        <!--android:layout_margin="5dp"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/profile_subdistrict"/>-->
+                    <!--<RelativeLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:background="@drawable/bg_spinner_region">-->
+                        <!--<Spinner-->
+                            <!--android:id="@+id/profileSpSubdistrict"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content" />-->
+                    <!--</RelativeLayout>-->
 
                     <TextView
                         android:layout_margin="5dp"

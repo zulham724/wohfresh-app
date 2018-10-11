@@ -1,12 +1,16 @@
-package com.woohfresh.adapter;
+package com.woohfresh.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -14,6 +18,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.woohfresh.App;
 import com.woohfresh.R;
+import com.woohfresh.activity.ProductsDetailActivity;
+import com.woohfresh.data.local.Constants;
 import com.woohfresh.models.api.products.ProductSalesItem;
 
 import java.util.List;
@@ -27,17 +33,19 @@ public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder
 
     private List<ProductSalesItem> pSales;
     private Context context;
-    String img, badge, title, weight, unit;
+    String img, title, desc, weight, unit, badge;
 
-    public FruitsAdapter(List<ProductSalesItem> pSales, Context context, String imgs,
-                         String badges, String titles, String weights, String units) {
+    public FruitsAdapter(List<ProductSalesItem> pSales, Context context,
+                         String imgs, String titles, String descs, String weights, String units,
+                         String badges) {
         this.pSales = pSales;
         this.context = context;
         this.img = imgs;
-        this.badge = badges;
         this.title = titles;
+        this.desc = descs;
         this.weight = weights;
         this.unit = units;
+        this.badge = badges;
     }
 
     @Override
@@ -49,6 +57,8 @@ public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.llnavProdDet)
+        LinearLayout llNav;
         @BindView(R.id.ivFruits)
         ImageView iv;
         @BindView(R.id.rtbFruits)
@@ -71,6 +81,7 @@ public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        Log.d("fruitsadapter:img: ",URL_STORAGE + img);
         final ProductSalesItem requestList = pSales.get(position);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.my_bg_img_blank);
@@ -78,11 +89,6 @@ public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder
         Glide.with(context)
                 .setDefaultRequestOptions(requestOptions)
                 .load(URL_STORAGE + img).into(holder.iv);
-        if(badge != null) {
-            int valBadges = Integer.parseInt(badge.replace("%", ""));
-            float rates = (float) ((valBadges * 5) / 100);
-            holder.rtb.setRating(rates);
-        }
         holder.tvTitle.setText(title);
         holder.tvPrice.setText("Rp " +App.toRupiah(String.valueOf(requestList.getPrice())));
         holder.tvUnit.setText("/ "+weight+" "+unit);
@@ -92,21 +98,21 @@ public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder
                 App.TShort("Added");
             }
         });
-//        holder.mMyRequest.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DataItem requestList1 = requestLists.get(position);
-//                Intent i = new Intent(v.getContext(), BeritaDetailActivity.class);
-//                Bundle b = new Bundle();
-//                b.putString(Constants.BERITA_JUDUL, requestList1.getJudul());
-//                b.putString(Constants.BERITA_IMG, requestList1.getImg());
-//                b.putString(Constants.BERITA_DESKRIPSI, requestList1.getDeskripsi());
-//                b.putString(Constants.BERITA_PEMBAHARUAN, requestList1.getPembaharuan());
-//                b.putString(Constants.BERITA_KATEGORI, requestList1.getKategoriBerita());
-//                i.putExtras(b);
-//                v.getContext().startActivity(i);
-//            }
-//        });
+        holder.llNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProductSalesItem listPSales = pSales.get(position);
+                Intent i = new Intent(v.getContext(), ProductsDetailActivity.class);
+                Bundle b = new Bundle();
+                b.putString(Constants.proddet_title, title);
+                b.putString(Constants.proddet_desc, desc);
+                b.putString(Constants.proddet_weight, weight+" "+unit);
+                b.putString(Constants.proddet_badge, badge);
+                b.putInt(Constants.proddet_price, listPSales.getPrice());
+                i.putExtras(b);
+                v.getContext().startActivity(i);
+            }
+        });
 
     }
 

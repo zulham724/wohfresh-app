@@ -47,6 +47,9 @@
     <string name="activity_title_privacy_policy">Privacy Policy</string>
     <string name="privacy_policy">Privacy Policy</string>
 
+    <!--signin-->
+    <string name="err_signin_password">Password mismatch</string>
+
     <!--setting-->
     <string name="setting_lang">Choose Language</string>
     <string name="setting_lang_change">Change</string>
@@ -116,4 +119,22 @@
     <string name="search_type1">Products</string>
     <string name="search_type2">Recipes</string>
     <string name="search_list_title">Recent Search List</string>
+
+    <!--proddet-->
+    <string name="s_proddet_key">Key Information</string>
+    <string name="s_proddet_about">About The Product</string>
+    <string name="s_proddet_handling">Handling and Delivery</string>
+    <string name="s_proddet_nuts">Nutrition Fact</string>
+    <string name="s_proddet_err_no_stateid">Cant get product, no state id</string>
+
+    <!--info-->
+    <string name="info_msg_exit">Are you sure to exit app ?</string>
+    <string name="info_msg_del_recipes">Yakin hapus resep ?</string>
+
+    <string-array name="arr_filter">
+        <item>All Categories</item>
+        <item>Subcategories</item>
+        <item>Current Location</item>
+    </string-array>
+
 </resources>

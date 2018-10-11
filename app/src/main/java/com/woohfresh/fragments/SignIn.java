@@ -16,9 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
-import com.crashlytics.android.Crashlytics;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -50,11 +50,14 @@ import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.App;
 import com.woohfresh.BuildConfig;
 import com.woohfresh.R;
+import com.woohfresh.activity.ForgotPasswordActivity;
 import com.woohfresh.activity.MainActivity;
 import com.woohfresh.data.local.Constants;
+import com.woohfresh.data.sources.remote.api.Apis;
 import com.woohfresh.models.api.GSecret;
 import com.woohfresh.models.api.POauth;
 import com.woohfresh.models.api.RGlobal;
+import com.woohfresh.models.api.user.GUser;
 
 import java.util.List;
 
@@ -66,6 +69,8 @@ import retrofit2.Callback;
 
 import static com.woohfresh.App.subMail;
 import static com.woohfresh.data.local.Constants.IS_LANGUAGE;
+
+//import com.crashlytics.android.Crashlytics;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -109,8 +114,8 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
 
     @OnClick(R.id.tvForgotPassword)
     public void ocFP() {
-//        startActivity(new Intent(getActivity(), ForgotPasswordActivity.class));
-        Crashlytics.getInstance().crash(); // Force a crash
+        startActivity(new Intent(getActivity(), ForgotPasswordActivity.class));
+//        Crashlytics.getInstance().crash(); // Force a crash
     }
 
     //    facebook
@@ -256,7 +261,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             // get parsed error object (If ApiError is your class)
                             RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getError());
+                            App.TShort(apiError.getMessage());
                         } else {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                         }
@@ -392,11 +397,43 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
     }
 
     public void navSuccess(){
-        Intent i = new Intent(getActivity(), MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i);
-        getActivity().finish();
+        pd.show();
+        AndroidNetworking.get(Apis.GET_USER)
+                .addHeaders("Accept", "application/json")
+                .addHeaders("Authorization", Constants.VAL_AUTH)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsObject(GUser.class, new ParsedRequestListener <GUser>() {
+                    @Override
+                    public void onResponse(GUser response) {
+                        pd.dismiss();
+
+                        Prefs.putString(Constants.G_USER_ID, String.valueOf(response.getId()));
+                        Prefs.putString(Constants.G_ROLE_ID , String.valueOf(response.getRoleId()));
+                        Prefs.putString(Constants.G_NAME, response.getName());
+                        Prefs.putString(Constants.G_EMAIL , response.getEmail());
+                        Prefs.putString(Constants.G_AVATAR , String.valueOf(response.getAvatar()));
+                        Prefs.putString(Constants.G_FACEBOOK_ID , String.valueOf(response.getFacebookId()));
+                        Prefs.putString(Constants.G_GOOGLE_ID , String.valueOf(response.getGoogleId()));
+                        Prefs.putString(Constants.G_LAST_LOGIN , String.valueOf(response.getLastLogin()));
+                        Prefs.putString(Constants.G_IS_ACTIVE , String.valueOf(response.getIsActive()));
+                        Prefs.putString(Constants.G_CREATED_AT , String.valueOf(response.getCreatedAt()));
+                        Prefs.putString(Constants.G_UPDATED_AT , String.valueOf(response.getUpdatedAt()));
+
+                        Intent i = new Intent(getActivity(), MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        pd.dismiss();
+                        // handle error
+                        App.TShort(error.getErrorDetail());
+                    }
+                });
     }
 
 }
