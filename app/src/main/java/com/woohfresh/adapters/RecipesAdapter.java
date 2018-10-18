@@ -98,6 +98,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
                         if(null != response.getAvatar()){
                             Glide.with(context)
                                     .load(URL_STORAGE + response.getAvatar())
+                                    .apply(RequestOptions.circleCropTransform())
                                     .into(holder.ivIngredient);
                         }
                     }
