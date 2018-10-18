@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -26,16 +27,19 @@ import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.App;
 import com.woohfresh.R;
+import com.woohfresh.adapters.ProductsAdapter;
 import com.woohfresh.adapters.ProductsStateAdapter;
+import com.woohfresh.adapters.ProductsSubcategoriesAdapter;
 import com.woohfresh.data.local.Constants;
 import com.woohfresh.data.sources.remote.api.Apis;
+import com.woohfresh.models.api.products.GProducts;
 import com.woohfresh.models.api.products.ProductTranslationsItem;
 import com.woohfresh.models.api.products.state.GProductsState;
 import com.woohfresh.models.api.products.state.ProductImagesItem;
 import com.woohfresh.models.api.products.state.ProductSalesItem;
 import com.woohfresh.models.api.search.state.GStateId;
+import com.woohfresh.models.api.subcategories.GSubcategories;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,6 +74,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     @BindView(R.id.spFilter)
     Spinner spFilter;
+    String sFilter,selected_item;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,16 +96,34 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
         ArrayAdapter adapterFilter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.arr_filter, R.layout.my_spinner_filter);
 //        adapterFilter.setDropDownViewResource(R.layout.my_spinner_filter);
+//        ArrayAdapter adapterFilter = ArrayAdapter.createFromResource(getActivity(), R.array.arr_filter,
+//                android.R.layout.simple_spinner_dropdown_item);
+//        adapterFilter.setDropDownViewResource(R.layout.my_spinner_filter);
+        selected_item = "All Categories";
         spFilter.setAdapter(adapterFilter);
+        spFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapter, View v,int position, long id) {
+                // On selecting a spinner item
+                selected_item = adapter.getItemAtPosition(position).toString();
+                initProduct();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+        sFilter = spFilter.getSelectedItem().toString();
+
         recyclerView = (RecyclerView) view.findViewById(R.id.card_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(mLayoutManager);
-        adapter = new ProductsStateAdapter(gProductsState, getActivity());
+//        adapter = new ProductsStateAdapter(gProductsState, getActivity());
+//        recyclerView.setAdapter(adapter);
+//        pSales = new ArrayList<>();
+
 //        adapter = new ProductsAdapter(pSales,getActivity());
-        recyclerView.setAdapter(adapter);
 //        gProductsState = new ArrayList<>();
-        pSales = new ArrayList<>();
 //        pImages = new ArrayList<>();
 
 //        initProduct();
@@ -168,7 +191,9 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     @Override
     public void onProviderDisabled(String provider) {
-        App.TShort("Please Enable GPS and Internet");
+        if(sFilter.equals("Current Location")){
+            App.TShort("Please Enable GPS and Internet");
+        }
     }
 
     @Override
@@ -188,12 +213,85 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void initProduct() {
-        String state_id = Prefs.getString(Constants.loc_state_id, "");
-        if (!state_id.equals("")) {
-            getProductsState(state_id);
-        } else {
-            App.TShort("No State Id");
+        if(selected_item.equals("Current Location")){
+            String state_id = Prefs.getString(Constants.loc_state_id, "");
+            if (!state_id.equals("")) {
+                getProductsState(state_id);
+            } else {
+                App.TShort("No State Id");
+                getLocation();
+            }
+        }else  if(selected_item.equals("Subcategories")){
+            getSub();
+        }else {
+            getAllCategories();
         }
+    }
+
+    private void getSub() {
+        String auth = "Bearer " + Prefs.getString(Constants.OAUTH_ACCESS_TOKEN, "");
+        AndroidNetworking.get(Apis.URL_SUBCATEGORIES)
+                .addHeaders("Accept", "application/json")
+                .addHeaders("Authorization", auth)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsObjectList(GSubcategories.class, new ParsedRequestListener<List<GSubcategories>>() {
+                    @Override
+                    public void onResponse(List<GSubcategories> rets) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        for (int i = 0; i < rets.size(); i++) {
+//                            List<GSubcategories> gSubcategories;
+//                            gSubcategories = rets.get(i);
+//                            pTrans = ret.getProductTranslations();
+//                            pImages = rets.get(i).getProductImages();
+                            adapter = new ProductsSubcategoriesAdapter(rets, getActivity());
+                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+//                        pd.dismiss();
+                        // handle error
+                        App.TShort(error.getErrorDetail());
+                        Log.d("cErrorFruits", String.valueOf(error));
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+    }
+
+    private void getAllCategories() {
+        String auth = "Bearer " + Prefs.getString(Constants.OAUTH_ACCESS_TOKEN, "");
+        Log.d("cAuth", auth);
+        AndroidNetworking.get(Apis.URL_PRODUCTS)
+                .addHeaders("Accept", "application/json")
+                .addHeaders("Authorization", auth)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsObjectList(GProducts.class, new ParsedRequestListener<List<GProducts>>() {
+                    @Override
+                    public void onResponse(List<GProducts> rets) {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        for (int i = 0; i < rets.size(); i++) {
+//                            pProductSales= rets.get(i).getProductSales();
+//                            pTrans = ret.getProductTranslations();
+//                            pImages = rets.get(i).getProductImages();
+                            adapter = new ProductsAdapter(rets, getActivity());
+                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+//                        pd.dismiss();
+                        // handle error
+                        App.TShort(error.getErrorDetail());
+                        Log.d("cErrorFruits", String.valueOf(error));
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                });
     }
 
     private void getProductsState(String stateId) {

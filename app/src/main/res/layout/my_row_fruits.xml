@@ -44,7 +44,7 @@
                     android:id="@+id/tvFruitsTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Small thailan water melon"
+                    android:text="#Small thailan water melon"
                     android:textColor="@android:color/tertiary_text_dark" />
 
                 <TextView
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="Rp. 100,000"
+                    android:text="#Rp. 100,000"
                     android:textStyle="bold" />
 
                 <TextView
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:gravity="end"
-                    android:text="kilogram"
+                    android:text="#kilogram"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             </LinearLayout>

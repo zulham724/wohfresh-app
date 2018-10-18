@@ -11,7 +11,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Filter"
@@ -20,12 +20,12 @@
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
         <Spinner
-            android:background="@color/colorPrimary"
+            android:background="@drawable/my_bg_spinner"
             android:id="@+id/spFilter"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawSelectorOnTop="true"
-            android:spinnerMode="dropdown"/>
+            android:spinnerMode="dropdown" />
 
         <android.support.v4.widget.SwipeRefreshLayout
             xmlns:android="http://schemas.android.com/apk/res/android"

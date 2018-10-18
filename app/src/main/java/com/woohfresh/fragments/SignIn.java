@@ -131,13 +131,13 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pd = new App.LoadingPrimary(getActivity());
         if (isAdded()) {
             TAG = getActivity().getClass().getSimpleName();
         }
         mContext = getActivity();
         validator = new Validator(this);
         validator.setValidationListener(this);
-        pd = new App.LoadingPrimary(getActivity());
         mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -199,6 +199,10 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ButterKnife.bind(this, view);
+        if(!Prefs.getString(Constants.TEMP_EMAIL,"").equals("")) {
+            mEmail.setText(Prefs.getString(Constants.TEMP_EMAIL, ""));
+            mPass.setText(Prefs.getString(Constants.TEMP_PASS, ""));
+        }
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
         mAskSignup.setText(Html.fromHtml(getString(R.string.login_no_acc)));
 
@@ -242,6 +246,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                     @Override
                     public void onResponse(POauth user) {
                         pd.dismiss();
+                        Prefs.putString(Constants.G_PASSWORD, mPass.getText().toString());
                         Prefs.putString(Constants.OAUTH_TOKEN_TYPE, user.getTokenType());
                         Prefs.putString(Constants.OAUTH_EXPIRES_IN, String.valueOf(user.getExpiresIn()));
                         Prefs.putString(Constants.OAUTH_ACCESS_TOKEN, user.getAccessToken());
@@ -249,7 +254,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                         Prefs.putString(Constants.IS_LOGIN, "1");
                         App.TShort("success");
                         navSuccess();
-                        Prefs.putString(Constants.USER_NAME, subMail(mEmail.getText().toString()));
+//                        Prefs.putString(Constants.USER_NAME, subMail(mEmail.getText().toString()));
                     }
 
                     @Override

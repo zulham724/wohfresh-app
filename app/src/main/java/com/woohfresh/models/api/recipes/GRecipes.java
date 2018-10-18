@@ -1,5 +1,6 @@
 package com.woohfresh.models.api.recipes;
 
+import java.util.List;
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
@@ -8,6 +9,18 @@ public class GRecipes{
 
 	@SerializedName("difficulty_level")
 	private int difficultyLevel;
+
+	@SerializedName("recipe_comments")
+	private List<Object> recipeComments;
+
+	@SerializedName("portion_per_serve")
+	private int portionPerServe;
+
+	@SerializedName("description")
+	private String description;
+
+	@SerializedName("created_at")
+	private String createdAt;
 
 	@SerializedName("updated_at")
 	private String updatedAt;
@@ -18,17 +31,17 @@ public class GRecipes{
 	@SerializedName("name")
 	private String name;
 
-	@SerializedName("portion_per_serve")
-	private int portionPerServe;
+	@SerializedName("recipe_images")
+	private List<RecipeImagesItem> recipeImages;
 
-	@SerializedName("description")
-	private String description;
+	@SerializedName("recipe_tutorials")
+	private List<Object> recipeTutorials;
 
 	@SerializedName("preparation_time")
 	private int preparationTime;
 
-	@SerializedName("created_at")
-	private String createdAt;
+	@SerializedName("ingredients")
+	private List<Object> ingredients;
 
 	@SerializedName("id")
 	private int id;
@@ -42,6 +55,38 @@ public class GRecipes{
 
 	public int getDifficultyLevel(){
 		return difficultyLevel;
+	}
+
+	public void setRecipeComments(List<Object> recipeComments){
+		this.recipeComments = recipeComments;
+	}
+
+	public List<Object> getRecipeComments(){
+		return recipeComments;
+	}
+
+	public void setPortionPerServe(int portionPerServe){
+		this.portionPerServe = portionPerServe;
+	}
+
+	public int getPortionPerServe(){
+		return portionPerServe;
+	}
+
+	public void setDescription(String description){
+		this.description = description;
+	}
+
+	public String getDescription(){
+		return description;
+	}
+
+	public void setCreatedAt(String createdAt){
+		this.createdAt = createdAt;
+	}
+
+	public String getCreatedAt(){
+		return createdAt;
 	}
 
 	public void setUpdatedAt(String updatedAt){
@@ -68,20 +113,20 @@ public class GRecipes{
 		return name;
 	}
 
-	public void setPortionPerServe(int portionPerServe){
-		this.portionPerServe = portionPerServe;
+	public void setRecipeImages(List<RecipeImagesItem> recipeImages){
+		this.recipeImages = recipeImages;
 	}
 
-	public int getPortionPerServe(){
-		return portionPerServe;
+	public List<RecipeImagesItem> getRecipeImages(){
+		return recipeImages;
 	}
 
-	public void setDescription(String description){
-		this.description = description;
+	public void setRecipeTutorials(List<Object> recipeTutorials){
+		this.recipeTutorials = recipeTutorials;
 	}
 
-	public String getDescription(){
-		return description;
+	public List<Object> getRecipeTutorials(){
+		return recipeTutorials;
 	}
 
 	public void setPreparationTime(int preparationTime){
@@ -92,12 +137,12 @@ public class GRecipes{
 		return preparationTime;
 	}
 
-	public void setCreatedAt(String createdAt){
-		this.createdAt = createdAt;
+	public void setIngredients(List<Object> ingredients){
+		this.ingredients = ingredients;
 	}
 
-	public String getCreatedAt(){
-		return createdAt;
+	public List<Object> getIngredients(){
+		return ingredients;
 	}
 
 	public void setId(int id){
@@ -121,13 +166,17 @@ public class GRecipes{
 		return 
 			"GRecipes{" + 
 			"difficulty_level = '" + difficultyLevel + '\'' + 
+			",recipe_comments = '" + recipeComments + '\'' + 
+			",portion_per_serve = '" + portionPerServe + '\'' + 
+			",description = '" + description + '\'' + 
+			",created_at = '" + createdAt + '\'' + 
 			",updated_at = '" + updatedAt + '\'' + 
 			",user_id = '" + userId + '\'' + 
 			",name = '" + name + '\'' + 
-			",portion_per_serve = '" + portionPerServe + '\'' + 
-			",description = '" + description + '\'' + 
+			",recipe_images = '" + recipeImages + '\'' + 
+			",recipe_tutorials = '" + recipeTutorials + '\'' + 
 			",preparation_time = '" + preparationTime + '\'' + 
-			",created_at = '" + createdAt + '\'' + 
+			",ingredients = '" + ingredients + '\'' + 
 			",id = '" + id + '\'' + 
 			",tutorial = '" + tutorial + '\'' + 
 			"}";

@@ -83,6 +83,7 @@ public class App extends MultiDexApplication {
 
         mApiService = Apis.getAPIService();
 
+//        AndroidNetworking.initialize(getApplicationContext());
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient
@@ -147,7 +148,15 @@ public class App extends MultiDexApplication {
     public static void TShort(String title) {
         if (title.toLowerCase().contains("unable to resolve host")) {
             Toast.makeText(getAppContext(), getAppContext().getString(R.string.err_server), Toast.LENGTH_SHORT).show();
-        } else {
+        } else if(title.equals("responseFromServerError")){
+            Prefs.clear();
+            Prefs.getPreferences().edit().clear().apply();
+            Prefs.putString(IS_LANGUAGE,"1");
+            Intent i = new Intent(getAppContext(),AuthActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            getAppContext().startActivity(i);
+        }else {
             Toast.makeText(getAppContext(), title, Toast.LENGTH_SHORT).show();
         }
     }
@@ -496,6 +505,7 @@ public class App extends MultiDexApplication {
 
     public static void appExit(Activity activity){
         Prefs.clear();
+        Prefs.getPreferences().edit().clear().apply();
         Prefs.putString(IS_LANGUAGE,"1");
         intentFinish(activity,AuthActivity.class);
     }

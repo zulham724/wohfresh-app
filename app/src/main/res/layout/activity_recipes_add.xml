@@ -6,7 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".activity.RecipesAddActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ScrollView
+        android:layout_above="@id/llAddRecipe"
         android:id="@+id/svAdd"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -276,7 +281,7 @@
 
             <Button
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="50dp"
                 android:id="@+id/btnRecipesDelete"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -420,5 +425,24 @@
             <!--</android.support.design.widget.TextInputLayout>-->
         <!--</LinearLayout>-->
     <!--</ScrollView>-->
+
+    <LinearLayout
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:id="@+id/llAddRecipe"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_margin="15dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CREATE"/>
+
+    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

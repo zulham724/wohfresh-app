@@ -1,8 +1,10 @@
 package com.woohfresh.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -30,17 +33,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RecipesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class RecipesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.card_recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_container)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    @OnClick(R.id.fabIngredient)
-    public void ocFab() {
-        startActivity(new Intent(getActivity(), RecipesAddActivity.class));
-    }
+    //    @OnClick(R.id.fabIngredient)
+//    public void ocFab() {
+//        startActivity(new Intent(getActivity(), RecipesAddActivity.class));
+//    }
+    @BindView(R.id.fabIngredient)
+    FloatingActionButton fabAdd;
+    @BindView(R.id.llFabRecipes)
+    LinearLayout llFab;
 
     App.LoadingPrimary pd;
 
@@ -87,6 +94,18 @@ public class RecipesFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 initData();
             }
         });
+
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), RecipesAddActivity.class);
+                Bundle b = new Bundle();
+                b.putString(Constants.RECIPES_STATUS, "add");
+                i.putExtras(b);
+                startActivity(i);
+                getActivity().finish();
+            }
+        });
     }
 
     @Override
@@ -103,6 +122,7 @@ public class RecipesFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsObjectList(GRecipes.class, new ParsedRequestListener<List<GRecipes>>() {
+                    @SuppressLint("RestrictedApi")
                     @Override
                     public void onResponse(List<GRecipes> response) {
                         pd.dismiss();
@@ -113,6 +133,7 @@ public class RecipesFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         adapter.notifyDataSetChanged();
                         if (adapter.getItemCount() == 0) {
                             App.TShort("Belum ada resep");
+                            llFab.setVisibility(View.VISIBLE);
                         }
                     }
 

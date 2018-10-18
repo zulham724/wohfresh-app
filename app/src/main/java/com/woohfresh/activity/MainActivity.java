@@ -52,7 +52,7 @@ import com.woohfresh.models.api.search.state.GStateId;
 import java.util.List;
 import java.util.Locale;
 
-import static com.woohfresh.data.local.Constants.USER_NAME;
+import static com.woohfresh.data.sources.remote.api.Apis.URL_STORAGE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void loadNavHeader() {
         // name, edit
-        txtName.setText(Prefs.getString(USER_NAME,""));
+        txtName.setText(Prefs.getString(Constants.G_NAME,""));
         txtedit.setText("edit");
         txtedit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -309,10 +309,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Loading profile image
         Glide.with(this)
-                .load(R.drawable.profile_blank)
+                .load(URL_STORAGE + Prefs.getString(Constants.G_AVATAR,""))
                 .apply(RequestOptions.circleCropTransform()
                         .placeholder(R.drawable.profile_blank)
-                        .error(R.drawable.err_img_port))
+                        .error(R.drawable.profile_blank))
                 .into(imgProfile);
     }
 

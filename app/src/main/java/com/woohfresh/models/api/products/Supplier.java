@@ -16,7 +16,7 @@ public class Supplier{
 	private String name;
 
 	@SerializedName("description")
-	private String description;
+	private Object description;
 
 	@SerializedName("created_at")
 	private String createdAt;
@@ -63,11 +63,11 @@ public class Supplier{
 		return name;
 	}
 
-	public void setDescription(String description){
+	public void setDescription(Object description){
 		this.description = description;
 	}
 
-	public String getDescription(){
+	public Object getDescription(){
 		return description;
 	}
 

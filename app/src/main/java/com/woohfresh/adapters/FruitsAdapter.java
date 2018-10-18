@@ -20,7 +20,7 @@ import com.woohfresh.App;
 import com.woohfresh.R;
 import com.woohfresh.activity.ProductsDetailActivity;
 import com.woohfresh.data.local.Constants;
-import com.woohfresh.models.api.products.ProductSalesItem;
+import com.woohfresh.models.api.products.GProducts;
 
 import java.util.List;
 
@@ -31,11 +31,11 @@ import static com.woohfresh.data.sources.remote.api.Apis.URL_STORAGE;
 
 public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder> {
 
-    private List<ProductSalesItem> pSales;
+    private List<GProducts> pSales;
     private Context context;
     String img, title, desc, weight, unit, badge;
 
-    public FruitsAdapter(List<ProductSalesItem> pSales, Context context,
+    public FruitsAdapter(List<GProducts> pSales, Context context,
                          String imgs, String titles, String descs, String weights, String units,
                          String badges) {
         this.pSales = pSales;
@@ -82,7 +82,7 @@ public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Log.d("fruitsadapter:img: ",URL_STORAGE + img);
-        final ProductSalesItem requestList = pSales.get(position);
+        final GProducts requestList = pSales.get(position);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.my_bg_img_blank);
         requestOptions.error(R.drawable.err_no_image);
@@ -90,7 +90,7 @@ public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder
                 .setDefaultRequestOptions(requestOptions)
                 .load(URL_STORAGE + img).into(holder.iv);
         holder.tvTitle.setText(title);
-        holder.tvPrice.setText("Rp " +App.toRupiah(String.valueOf(requestList.getPrice())));
+        holder.tvPrice.setText("Rp " +App.toRupiah(String.valueOf(requestList.getProductSales().get(position).getPrice())));
         holder.tvUnit.setText("/ "+weight+" "+unit);
         holder.btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,14 +101,14 @@ public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder
         holder.llNav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProductSalesItem listPSales = pSales.get(position);
+                GProducts listPSales = pSales.get(position);
                 Intent i = new Intent(v.getContext(), ProductsDetailActivity.class);
                 Bundle b = new Bundle();
                 b.putString(Constants.proddet_title, title);
                 b.putString(Constants.proddet_desc, desc);
                 b.putString(Constants.proddet_weight, weight+" "+unit);
                 b.putString(Constants.proddet_badge, badge);
-                b.putInt(Constants.proddet_price, listPSales.getPrice());
+                b.putInt(Constants.proddet_price, listPSales.getProductSales().get(position).getPrice());
                 i.putExtras(b);
                 v.getContext().startActivity(i);
             }

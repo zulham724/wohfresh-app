@@ -3,15 +3,14 @@ package com.woohfresh.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Process;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -29,7 +28,6 @@ import com.woohfresh.App;
 import com.woohfresh.R;
 import com.woohfresh.data.local.Constants;
 import com.woohfresh.data.sources.remote.api.Apis;
-import com.woohfresh.models.api.RGlobal;
 
 import org.json.JSONObject;
 
@@ -41,6 +39,8 @@ import butterknife.OnClick;
 
 public class RecipesAddActivity extends AppCompatActivity implements Validator.ValidationListener {
 
+    @BindView(R.id.llAddRecipe)
+    LinearLayout llAdd;
     @BindView(R.id.svAdd)
     ScrollView mAdd;
     @NotEmpty
@@ -146,6 +146,17 @@ public class RecipesAddActivity extends AppCompatActivity implements Validator.V
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Resep");
         ButterKnife.bind(this);
+        llAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), RecipesAddActivity.class);
+                Bundle b = new Bundle();
+                b.putString(Constants.RECIPES_STATUS, "add");
+                i.putExtras(b);
+                startActivity(i);
+                finish();
+            }
+        });
         sbRecipes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -204,6 +215,8 @@ public class RecipesAddActivity extends AppCompatActivity implements Validator.V
             etEditPortion.setEnabled(false);
             btnDelete.setVisibility(View.GONE);
             btnEdit.setVisibility(View.GONE);
+        }else if("add".equals(i.getStringExtra(Constants.RECIPES_STATUS))){
+            llAdd.setVisibility(View.GONE);
         }
     }
 

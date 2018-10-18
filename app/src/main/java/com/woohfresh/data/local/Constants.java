@@ -15,13 +15,14 @@ public class Constants {
     public static final String OAUTH_EXPIRES_IN = "OAUTH_EXPIRES_IN";
     public static final String OAUTH_ACCESS_TOKEN = "OAUTH_ACCESS_TOKEN";
     public static final String OAUTH_REFRESH_TOKEN = "OAUTH_REFRESH_TOKEN";
-    public static final String USER_ROLE_ID = "USER_ROLE_ID";
-    public static final String USER_NAME = "USER_NAME";
-    public static final String USER_EMAIL = "USER_EMAIL";
-    public static final String USER_ID = "USER_ID";
+//    public static final String USER_ROLE_ID = "USER_ROLE_ID";
+//    public static final String USER_NAME = "USER_NAME";
+//    public static final String USER_EMAIL = "USER_EMAIL";
+//    public static final String USER_ID = "USER_ID";
 
     //gUser
     public static final String G_USER_ID = "G_USER_ID";
+    public static final String G_BIO_ID = "G_BIO_ID";
     public static final String G_ROLE_ID = "G_ROLE_ID";
     public static final String G_NAME= "G_USERNAME";
     public static final String G_EMAIL = "G_EMAIL";
@@ -32,6 +33,11 @@ public class Constants {
     public static final String G_IS_ACTIVE = "G_IS_ACTIVE";
     public static final String G_CREATED_AT = "G_CREATED_AT";
     public static final String G_UPDATED_AT = "G_UPDATED_AT";
+    public static final String G_PASSWORD = "G_PASSWORD";
+
+    //temp
+    public static final String TEMP_EMAIL = "TEMP_EMAIL";
+    public static final String TEMP_PASS = "TEMP_PASS";
 
 //    proddet
     public static final String proddet_title = "proddet_title";

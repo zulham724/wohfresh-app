@@ -3,6 +3,7 @@ package com.woohfresh.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ import com.mobsandgeeks.saripaar.annotation.Password;
 import com.pixplicity.easyprefs.library.Prefs;
 import com.woohfresh.App;
 import com.woohfresh.R;
+import com.woohfresh.activity.AuthActivity;
 import com.woohfresh.data.local.Constants;
 import com.woohfresh.data.sources.remote.api.Apis;
 import com.woohfresh.models.api.PSignUp;
@@ -116,8 +118,11 @@ public class SignUp extends Fragment implements Validator.ValidationListener{
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                SignIn navSuccess = new SignIn();
-                navSuccess.navSuccess();
+                Intent i = new Intent(getActivity(),AuthActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                getActivity().startActivity(i);
+                getActivity().finish();
             }
         });
 
@@ -140,11 +145,13 @@ public class SignUp extends Fragment implements Validator.ValidationListener{
                     @Override
                     public void onResponse(PSignUp user) {
                         pd.dismiss();
-                        Prefs.putString(Constants.USER_ROLE_ID, String.valueOf(user.getRoleId()));
-                        Prefs.putString(Constants.USER_NAME, String.valueOf(user.getName()));
-                        Prefs.putString(Constants.USER_EMAIL,user.getEmail());
-                        Prefs.putString(Constants.USER_ID, String.valueOf(user.getId()));
-                        Prefs.putString(Constants.IS_LOGIN,"1");
+                        Prefs.putString(Constants.G_ROLE_ID, String.valueOf(user.getRoleId()));
+                        Prefs.putString(Constants.G_NAME, String.valueOf(user.getName()));
+                        Prefs.putString(Constants.G_EMAIL,user.getEmail());
+                        Prefs.putString(Constants.G_USER_ID, String.valueOf(user.getId()));
+//                        Prefs.putString(Constants.IS_LOGIN,"1");
+                        Prefs.putString(Constants.TEMP_EMAIL,mEmail.getText().toString());
+                        Prefs.putString(Constants.TEMP_PASS,mPassRe.getText().toString());
                         dialogSuccess();
                     }
                     @Override
