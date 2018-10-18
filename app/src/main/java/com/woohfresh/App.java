@@ -83,16 +83,16 @@ public class App extends MultiDexApplication {
 
         mApiService = Apis.getAPIService();
 
-//        AndroidNetworking.initialize(getApplicationContext());
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient
-                .Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(interceptor)
-                .build();
-        AndroidNetworking.initialize(getApplicationContext(), client);
+        AndroidNetworking.initialize(getApplicationContext());
+//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//        OkHttpClient client = new OkHttpClient
+//                .Builder()
+//                .readTimeout(60, TimeUnit.SECONDS)
+//                .connectTimeout(60, TimeUnit.SECONDS)
+//                .addInterceptor(interceptor)
+//                .build();
+//        AndroidNetworking.initialize(getApplicationContext(), client);
         AndroidNetworking.enableLogging();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
