@@ -1,5 +1,6 @@
 package com.woohfresh.activity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +45,7 @@ public class SearchActivity extends AppCompatActivity {
             RecyclerView recyclerView;
     App.LoadingPrimary pd;
     SearchView searchView;
+    Context c;
     private RecyclerView.Adapter adapter;
     private List<ProductSalesItem> pSales;
     List<GProductsState> gProductsState;
@@ -56,6 +58,7 @@ public class SearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
         pd = new App.LoadingPrimary(this);
+        c = this;
         initLL(false);
 
         recyclerView.setHasFixedSize(true);
@@ -184,7 +187,7 @@ public class SearchActivity extends AppCompatActivity {
                     public void onError(ANError error) {
                         pd.dismiss();
                         // handle error
-                        App.TShort(error.getErrorDetail());
+                        App.TShort(c,error.getErrorDetail());
                         Log.d("cErrorFruits", String.valueOf(error));
                     }
                 });

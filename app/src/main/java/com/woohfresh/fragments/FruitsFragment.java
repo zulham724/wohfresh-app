@@ -174,7 +174,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     @Override
     public void onLocationChanged(Location location) {
-//        App.TShort("Current Location: " + location.getLatitude() + ", " + location.getLongitude());
+//        App.TShort(mContext,"Current Location: " + location.getLatitude() + ", " + location.getLongitude());
         if (location != null) {
             if (!IS_LOC) {
                 IS_LOC = true;
@@ -182,7 +182,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     getStateId(addresses.get(0).getAdminArea());
-                    App.TShort("Lokasi anda : "+addresses.get(0).getAdminArea());
+                    App.TShort(mContext,"Lokasi anda : "+addresses.get(0).getAdminArea());
                 } catch (Exception e) {
                 }
             }
@@ -192,7 +192,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onProviderDisabled(String provider) {
         if(sFilter.equals("Current Location")){
-            App.TShort("Please Enable GPS and Internet");
+            App.TShort(mContext,"Please Enable GPS and Internet");
         }
     }
 
@@ -214,11 +214,11 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
     private void initProduct() {
         if(selected_item.equals("Current Location")){
-            String state_id = Prefs.getString(Constants.loc_state_id, "");
+            String state_id = Prefs.getString(Constants.G_state_id, "");
             if (!state_id.equals("")) {
                 getProductsState(state_id);
             } else {
-                App.TShort("No State Id");
+                App.TShort(mContext,"No State Id");
                 getLocation();
             }
         }else  if(selected_item.equals("Subcategories")){
@@ -229,6 +229,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void getSub() {
+        pd.show();
         String auth = "Bearer " + Prefs.getString(Constants.OAUTH_ACCESS_TOKEN, "");
         AndroidNetworking.get(Apis.URL_SUBCATEGORIES)
                 .addHeaders("Accept", "application/json")
@@ -238,6 +239,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 .getAsObjectList(GSubcategories.class, new ParsedRequestListener<List<GSubcategories>>() {
                     @Override
                     public void onResponse(List<GSubcategories> rets) {
+                        pd.dismiss();
                         mSwipeRefreshLayout.setRefreshing(false);
                         for (int i = 0; i < rets.size(); i++) {
 //                            List<GSubcategories> gSubcategories;
@@ -252,9 +254,9 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onError(ANError error) {
-//                        pd.dismiss();
+                        pd.dismiss();
                         // handle error
-                        App.TShort(error.getErrorDetail());
+                        App.TShort(mContext,error.getErrorDetail());
                         Log.d("cErrorFruits", String.valueOf(error));
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
@@ -262,6 +264,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void getAllCategories() {
+        pd.show();
         String auth = "Bearer " + Prefs.getString(Constants.OAUTH_ACCESS_TOKEN, "");
         Log.d("cAuth", auth);
         AndroidNetworking.get(Apis.URL_PRODUCTS)
@@ -272,6 +275,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 .getAsObjectList(GProducts.class, new ParsedRequestListener<List<GProducts>>() {
                     @Override
                     public void onResponse(List<GProducts> rets) {
+                        pd.dismiss();
                         mSwipeRefreshLayout.setRefreshing(false);
                         for (int i = 0; i < rets.size(); i++) {
 //                            pProductSales= rets.get(i).getProductSales();
@@ -285,9 +289,9 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onError(ANError error) {
-//                        pd.dismiss();
+                        pd.dismiss();
                         // handle error
-                        App.TShort(error.getErrorDetail());
+                        App.TShort(mContext,error.getErrorDetail());
                         Log.d("cErrorFruits", String.valueOf(error));
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
@@ -295,6 +299,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     private void getProductsState(String stateId) {
+        pd.show();
         String auth = "Bearer " + Prefs.getString(Constants.OAUTH_ACCESS_TOKEN, "");
         Log.d("cAuth", auth);
 //        pd.show();
@@ -307,6 +312,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 .getAsObjectList(GProductsState.class, new ParsedRequestListener<List<GProductsState>>() {
                     @Override
                     public void onResponse(List<GProductsState> rets) {
+                        pd.dismiss();
                         mSwipeRefreshLayout.setRefreshing(false);
                         for (int i = 0; i < rets.size(); i++) {
                             pSales = rets.get(i).getProductSales();
@@ -320,9 +326,9 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
                     @Override
                     public void onError(ANError error) {
-//                        pd.dismiss();
+                        pd.dismiss();
                         // handle error
-                        App.TShort(error.getErrorDetail());
+                        App.TShort(mContext,error.getErrorDetail());
                         Log.d("cErrorFruits", String.valueOf(error));
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
@@ -343,7 +349,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     public void onResponse(List<GStateId> rets) {
                         // do anything with response
                         for (GStateId ret : rets) {
-                            Prefs.putString(Constants.loc_state_id, String.valueOf(ret.getId()));
+                            Prefs.putString(Constants.G_state_id, String.valueOf(ret.getId()));
                             getProductsState(String.valueOf(ret.getId()));
                             pd.dismiss();
                         }
@@ -353,7 +359,7 @@ public class FruitsFragment extends Fragment implements SwipeRefreshLayout.OnRef
                     public void onError(ANError anError) {
                         // handle error
                         pd.dismiss();
-                        App.TShort(anError.getErrorDetail());
+                        App.TShort(mContext,anError.getErrorDetail());
                     }
                 });
     }

@@ -106,7 +106,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
                     @Override
                     public void onError(ANError error) {
                         // handle error
-                        App.TShort(error.getErrorDetail());
+                        App.TShort(context,error.getErrorDetail());
                     }
                 });
         holder.tvTitle.setText(requestList.getName());

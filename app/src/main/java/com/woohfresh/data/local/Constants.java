@@ -34,6 +34,9 @@ public class Constants {
     public static final String G_CREATED_AT = "G_CREATED_AT";
     public static final String G_UPDATED_AT = "G_UPDATED_AT";
     public static final String G_PASSWORD = "G_PASSWORD";
+    public static final String G_state_id = "G_state_id";
+    public static final String G_city_id = "G_city_id";
+    public static final String G_subdistrict_id = "G_subdistrict_id";
 
     //temp
     public static final String TEMP_EMAIL = "TEMP_EMAIL";
@@ -63,9 +66,6 @@ public class Constants {
     public static final String RECIPES_PREPARATION_TIME = "RECIPES_PREPARATION_TIME";
     public static final String RECIPES_PORTION_PER_SERVE = "RECIPES_PORTION_PER_SERVE";
 
-//    location
-    public static final String loc_state = "loc_state";
-    public static final String loc_state_id = "loc_state_id";
 
 //    val
     public static final String VAL_AUTH = "Bearer " + Prefs.getString(Constants.OAUTH_ACCESS_TOKEN, "");

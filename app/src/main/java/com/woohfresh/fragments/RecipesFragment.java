@@ -1,6 +1,7 @@
 package com.woohfresh.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,6 +51,7 @@ public class RecipesFragment extends Fragment implements SwipeRefreshLayout.OnRe
     LinearLayout llFab;
 
     App.LoadingPrimary pd;
+    Context c;
 
     @Nullable
     @Override
@@ -65,6 +67,7 @@ public class RecipesFragment extends Fragment implements SwipeRefreshLayout.OnRe
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         pd = new App.LoadingPrimary(getActivity());
+        c = getActivity();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RecipesAdapter(myRequestLists, getActivity());
@@ -132,7 +135,7 @@ public class RecipesFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                         if (adapter.getItemCount() == 0) {
-                            App.TShort("Belum ada resep");
+                            App.TShort(c,"Belum ada resep");
                             llFab.setVisibility(View.VISIBLE);
                         }
                     }
@@ -142,7 +145,7 @@ public class RecipesFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         pd.dismiss();
                         mSwipeRefreshLayout.setRefreshing(false);
                         // handle error
-                        App.TShort(error.getErrorDetail());
+                        App.TShort(c,error.getErrorDetail());
                     }
                 });
     }

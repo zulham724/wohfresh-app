@@ -127,7 +127,7 @@ public class ProductsStateAdapter extends RecyclerView.Adapter<ProductsStateAdap
         holder.btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.TShort("Added");
+                App.TShort(c,"Added");
             }
         });
         holder.llNav.setOnClickListener(new View.OnClickListener() {

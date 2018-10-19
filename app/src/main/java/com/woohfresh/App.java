@@ -145,17 +145,17 @@ public class App extends MultiDexApplication {
     }
 
     //toast
-    public static void TShort(String title) {
+    public static void TShort(Context cx, String title) {
         if (title.toLowerCase().contains("unable to resolve host")) {
             Toast.makeText(getAppContext(), getAppContext().getString(R.string.err_server), Toast.LENGTH_SHORT).show();
         } else if(title.equals("responseFromServerError")){
             Prefs.clear();
             Prefs.getPreferences().edit().clear().apply();
             Prefs.putString(IS_LANGUAGE,"1");
-            Intent i = new Intent(getAppContext(),AuthActivity.class);
+            Intent i = new Intent(cx,AuthActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            getAppContext().startActivity(i);
+            cx.startActivity(i);
         }else {
             Toast.makeText(getAppContext(), title, Toast.LENGTH_SHORT).show();
         }

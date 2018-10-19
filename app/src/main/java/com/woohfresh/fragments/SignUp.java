@@ -163,7 +163,7 @@ public class SignUp extends Fragment implements Validator.ValidationListener{
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             // get parsed error object (If ApiError is your class)
                             RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getError());
+                            App.TShort(mContext,apiError.getError());
                         } else {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                         }

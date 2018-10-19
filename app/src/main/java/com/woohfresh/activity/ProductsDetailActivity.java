@@ -1,5 +1,6 @@
 package com.woohfresh.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -59,6 +60,7 @@ public class ProductsDetailActivity extends AppCompatActivity {
     ArrayList<HashMap<String, String>> contactList;
     App.LoadingPrimary pd;
     RequestOptions requestOptions;
+    Context c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class ProductsDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
         pd = new App.LoadingPrimary(this);
+        c = this;
         Intent b = getIntent();
         tvTitle.setText(b.getStringExtra(Constants.proddet_title));
         tvDesc.setText(b.getStringExtra(Constants.proddet_desc));
@@ -79,11 +82,11 @@ public class ProductsDetailActivity extends AppCompatActivity {
         requestOptions.placeholder(R.drawable.my_bg_img_blank);
         requestOptions.error(R.drawable.err_no_image);
 
-        String state_id = Prefs.getString(Constants.loc_state_id, "");
+        String state_id = Prefs.getString(Constants.G_state_id, "");
         if(!state_id.equals("")) {
             getProductsState(state_id);
         }else {
-            App.TShort(getString(R.string.s_proddet_err_no_stateid));
+            App.TShort(c,getString(R.string.s_proddet_err_no_stateid));
         }
     }
 
@@ -138,7 +141,7 @@ public class ProductsDetailActivity extends AppCompatActivity {
                     public void onError(ANError error) {
 //                        pd.dismiss();
                         // handle error
-                        App.TShort(error.getErrorDetail());
+                        App.TShort(c,error.getErrorDetail());
                         Log.d("cErrorFruits", String.valueOf(error));
                     }
                 });

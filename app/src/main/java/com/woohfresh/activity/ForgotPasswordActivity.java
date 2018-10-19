@@ -69,7 +69,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
                     @Override
                     public void onResponse(POauth user) {
                         pd.dismiss();
-                        App.TShort("success");
+                        App.TShort(mContext,"success");
                     }
                     @Override
                     public void onError(ANError error) {
@@ -80,7 +80,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements Validat
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             // get parsed error object (If ApiError is your class)
                             RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getMessage());
+                            App.TShort(mContext,apiError.getMessage());
                         } else {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                         }

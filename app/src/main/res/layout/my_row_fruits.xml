@@ -28,7 +28,8 @@
                     android:id="@+id/ivFruits"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:scaleType="fitXY" />
+                    android:scaleType="fitXY"
+                    android:src="@drawable/err_no_image"/>
 
                 <RatingBar
                     android:id="@+id/rtbFruits"

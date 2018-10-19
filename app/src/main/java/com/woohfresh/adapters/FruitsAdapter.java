@@ -95,7 +95,7 @@ public class FruitsAdapter extends RecyclerView.Adapter<FruitsAdapter.ViewHolder
         holder.btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.TShort("Added");
+                App.TShort(context,"Added");
             }
         });
         holder.llNav.setOnClickListener(new View.OnClickListener() {

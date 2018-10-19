@@ -137,11 +137,11 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
     @OnClick(R.id.btnSave)
     public void ocSave() {
         if (etStateId.getText().toString().equals("")) {
-            App.TShort("Choose a state");
+            App.TShort(mContext,"Choose a state");
         } else if (etCityId.getText().toString().equals("")) {
-            App.TShort("Choose a city");
+            App.TShort(mContext,"Choose a city");
         } else if (etSubId.getText().toString().equals("")) {
-            App.TShort("Choose a subdistrict");
+            App.TShort(mContext,"Choose a subdistrict");
         } else {
             validator.validate();
         }
@@ -215,12 +215,15 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                             }
                             if (null != String.valueOf(response.getBiodata().getStateId())) {
                                 etStateId.setText(String.valueOf(response.getBiodata().getStateId()));
+                                Prefs.putString(Constants.G_state_id,(String.valueOf(response.getBiodata().getStateId())));
                             }
                             if (null != String.valueOf(response.getBiodata().getCityId())) {
                                 etCityId.setText(String.valueOf(response.getBiodata().getCityId()));
+                                Prefs.putString(Constants.G_city_id,(String.valueOf(response.getBiodata().getCityId())));
                             }
                             if (null != String.valueOf(response.getBiodata().getSubdistrictId())) {
                                 etSubId.setText(String.valueOf(response.getBiodata().getSubdistrictId()));
+                                Prefs.putString(Constants.G_subdistrict_id,(String.valueOf(response.getBiodata().getSubdistrictId())));
                             }
 //                            if(null != String.valueOf(response.getBiodata().getStateId())){
 //                                Log.wtf("stateId",String.valueOf(response.getBiodata().getStateId()));
@@ -238,7 +241,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                     public void onError(ANError error) {
                         pd.dismiss();
                         // handle error
-                        App.TShort(error.getErrorDetail());
+                        App.TShort(mContext,error.getErrorDetail());
                     }
                 });
 
@@ -416,7 +419,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
 //                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
 //                            // get parsed error object (If ApiError is your class)
 //                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-//                            App.TShort(apiError.getError());
+//                            App.TShort(mContext,apiError.getError());
 //                        } else {
 //                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
 //                        }
@@ -461,7 +464,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             // get parsed error object (If ApiError is your class)
                             RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getError());
+                            App.TShort(mContext,apiError.getError());
                         } else {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                         }
@@ -510,7 +513,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             // get parsed error object (If ApiError is your class)
                             RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getError());
+                            App.TShort(mContext,apiError.getError());
                         } else {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                         }
@@ -559,7 +562,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             // get parsed error object (If ApiError is your class)
                             RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getError());
+                            App.TShort(mContext,apiError.getError());
                         } else {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                         }
@@ -608,7 +611,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
 //                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
 //                            // get parsed error object (If ApiError is your class)
 //                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-//                            App.TShort(apiError.getError());
+//                            App.TShort(mContext,apiError.getError());
 //                        } else {
 //                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
 //                        }
@@ -656,7 +659,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
 //                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
 //                            // get parsed error object (If ApiError is your class)
 //                            RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-//                            App.TShort(apiError.getError());
+//                            App.TShort(mContext,apiError.getError());
 //                        } else {
 //                            Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
 //                        }
@@ -776,7 +779,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                         @Override
                         public void onResponse(GUser user) {
                             pd.dismiss();
-//                        App.TShort("Profile Updated");
+//                        App.TShort(mContext,"Profile Updated");
 //                        App.intentFinish(MyProfileActivity.this,MainActivity.class);
                             pBiodata();
                         }
@@ -790,7 +793,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                                 Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                                 // get parsed error object (If ApiError is your class)
                                 RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                                App.TShort(apiError.getMessage());
+                                App.TShort(mContext,apiError.getMessage());
                             } else {
                                 Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             }
@@ -823,7 +826,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                                 Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                                 // get parsed error object (If ApiError is your class)
                                 RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                                App.TShort(apiError.getMessage());
+                                App.TShort(mContext,apiError.getMessage());
                             } else {
                                 Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             }
@@ -853,7 +856,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                     @Override
                     public void onResponse(GUser user) {
                         pd.dismiss();
-                        App.TShort("Profile Updated");
+                        App.TShort(mContext,"Profile Updated");
                         App.intentFinish(MyProfileActivity.this, MainActivity.class);
                     }
 
@@ -866,7 +869,7 @@ public class MyProfileActivity extends AppCompatActivity implements DatePickerDi
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             // get parsed error object (If ApiError is your class)
                             RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getMessage());
+                            App.TShort(mContext,apiError.getMessage());
                         } else {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                         }

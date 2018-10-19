@@ -48,6 +48,7 @@ import com.woohfresh.fragments.HomeFragment;
 import com.woohfresh.fragments.RecipesFragment;
 import com.woohfresh.fragments.SettingsFragment;
 import com.woohfresh.models.api.search.state.GStateId;
+import com.woohfresh.models.api.user.GUser;
 
 import java.util.List;
 import java.util.Locale;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     LocationManager locationManager;
     String lattitude, longitude;
     App.LoadingPrimary pd;
+    Context c;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +139,53 @@ public class MainActivity extends AppCompatActivity {
             // you do not have permission go request runtime permissions
             RequestPermission(this, Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_LOCATION);
         }
+
+        initMe();
+    }
+
+    private void initMe(){
+        pd.show();
+        AndroidNetworking.get(Apis.GET_USER)
+                .addHeaders("Accept", "application/json")
+                .addHeaders("Authorization", Constants.VAL_AUTH)
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsObject(GUser.class, new ParsedRequestListener<GUser>() {
+                    @Override
+                    public void onResponse(GUser response) {
+                        pd.dismiss();
+                        Prefs.putString(Constants.G_USER_ID, String.valueOf(response.getId()));
+                        Prefs.putString(Constants.G_BIO_ID, String.valueOf(response.getBiodata().getId()));
+                        Prefs.putString(Constants.G_ROLE_ID, String.valueOf(response.getRoleId()));
+                        Prefs.putString(Constants.G_NAME, response.getName());
+                        Prefs.putString(Constants.G_EMAIL, response.getEmail());
+                        Prefs.putString(Constants.G_AVATAR, String.valueOf(response.getAvatar()));
+                        Prefs.putString(Constants.G_FACEBOOK_ID, String.valueOf(response.getFacebookId()));
+                        Prefs.putString(Constants.G_GOOGLE_ID, String.valueOf(response.getGoogleId()));
+                        Prefs.putString(Constants.G_LAST_LOGIN, String.valueOf(response.getLastLogin()));
+                        Prefs.putString(Constants.G_IS_ACTIVE, String.valueOf(response.getIsActive()));
+                        Prefs.putString(Constants.G_CREATED_AT, String.valueOf(response.getCreatedAt()));
+                        Prefs.putString(Constants.G_UPDATED_AT, String.valueOf(response.getUpdatedAt()));
+                        if (null != response.getBiodata()) {
+                            if (null != String.valueOf(response.getBiodata().getStateId())) {
+                                Prefs.putString(Constants.G_state_id,(String.valueOf(response.getBiodata().getStateId())));
+                            }
+                            if (null != String.valueOf(response.getBiodata().getCityId())) {
+                                Prefs.putString(Constants.G_city_id,(String.valueOf(response.getBiodata().getCityId())));
+                            }
+                            if (null != String.valueOf(response.getBiodata().getSubdistrictId())) {
+                                Prefs.putString(Constants.G_subdistrict_id,(String.valueOf(response.getBiodata().getSubdistrictId())));
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        pd.dismiss();
+                        App.TShort(c,error.getErrorDetail());
+                    }
+                });
     }
 
     @Override
@@ -151,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     initLocation();
                 } else {
                     // you do not have permission show toast.
-                    App.TShort("Unable to get product by location");
+                    App.TShort(c,"Unable to get product by location");
                 }
                 return;
             }
@@ -214,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
                     Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                     List<Address> addresses = geocoder.getFromLocation(latti, longi, 1);
                     getStateId(addresses.get(0).getAdminArea());
-//                    App.TShort(addresses.get(0).getAdminArea());
+//                    App.TShort(c,addresses.get(0).getAdminArea());
                 } catch (Exception e) {
 
                 }
@@ -231,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
                     Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                     List<Address> addresses = geocoder.getFromLocation(latti, longi, 1);
                     getStateId(addresses.get(0).getAdminArea());
-//                    App.TShort(addresses.get(0).getAdminArea());
+//                    App.TShort(c,addresses.get(0).getAdminArea());
                 } catch (Exception e) {
 
                 }
@@ -249,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                     Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                     List<Address> addresses = geocoder.getFromLocation(latti, longi, 1);
                     getStateId(addresses.get(0).getAdminArea());
-//                    App.TShort(addresses.get(0).getAdminArea());
+//                    App.TShort(c,addresses.get(0).getAdminArea());
                 } catch (Exception e) {
 
                 }
@@ -544,7 +593,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getStateId(String stateId){
-//        App.TShort(stateId);
+//        App.TShort(c,stateId);
         pd.show();
         AndroidNetworking.get(Apis.URL_SEARCH_STATE+"{stateId}")
                 .addPathParameter("stateId", stateId)
@@ -558,7 +607,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(List<GStateId> rets) {
                         // do anything with response
                         for (GStateId ret : rets) {
-                            Prefs.putString(Constants.loc_state_id, String.valueOf(ret.getId()));
+                            Prefs.putString(Constants.G_state_id, String.valueOf(ret.getId()));
                             pd.dismiss();
                         }
                     }
@@ -566,7 +615,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onError(ANError anError) {
                         // handle error
                         pd.dismiss();
-                        App.TShort(anError.getErrorDetail());
+                        App.TShort(c,anError.getErrorDetail());
                     }
                 });
     }

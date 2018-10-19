@@ -79,7 +79,6 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
         GoogleApiClient.OnConnectionFailedListener {
 
     App.LoadingPrimary pd;
-
     Context mContext;
     Validator validator;
 
@@ -174,7 +173,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                     Prefs.putString(Constants.APP_CLIENT_ID, String.valueOf(response.body().getId()));
                     Prefs.putString(Constants.APP_CLIENT_SECRET, response.body().getSecret());
                 } else {
-                    App.TShort(getString(R.string.err_server));
+                    App.TShort(mContext,getString(R.string.err_server));
                     getActivity().finish();
                 }
 
@@ -183,7 +182,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
             @Override
             public void onFailure(Call<GSecret> call, Throwable t) {
                 pd.dismiss();
-                App.TShort(t.getMessage());
+                App.TShort(mContext,t.getMessage());
             }
         });
     }
@@ -252,7 +251,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                         Prefs.putString(Constants.OAUTH_ACCESS_TOKEN, user.getAccessToken());
                         Prefs.putString(Constants.OAUTH_REFRESH_TOKEN, user.getRefreshToken());
                         Prefs.putString(Constants.IS_LOGIN, "1");
-                        App.TShort("success");
+                        App.TShort(mContext,"success");
                         navSuccess();
 //                        Prefs.putString(Constants.USER_NAME, subMail(mEmail.getText().toString()));
                     }
@@ -266,7 +265,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                             // get parsed error object (If ApiError is your class)
                             RGlobal apiError = error.getErrorAsObject(RGlobal.class);
-                            App.TShort(apiError.getMessage());
+                            App.TShort(mContext,apiError.getMessage());
                         } else {
                             Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                         }
@@ -305,7 +304,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
             String idSosmed = account.getId();
             Prefs.putString(Constants.APP_SOSMED_ID, idSosmed);
             Prefs.putString(Constants.APP_SOSMED_TOKEN, idToken);
-            App.TShort("success :" + account.getDisplayName());
+            App.TShort(mContext,"success :" + account.getDisplayName());
             navSuccess();
             Log.d("reqGoogle", idToken + "\n" + idSosmed);
         } else {
@@ -362,7 +361,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            App.TShort("Authentication failed");
+                            App.TShort(mContext,"Authentication failed");
                             updateUI(null);
                         }
 
@@ -378,13 +377,13 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
         pd.dismiss();
         if (user != null) {
 //            requestLoginSosmed(idSosmedFB, idTokenFB, "2");
-            App.TShort("success");
+            App.TShort(mContext,"success");
             navSuccess();
         } else {
 //            Toast.makeText(mContext, "Silahkan isi data anda untuk melanjutkan", Toast.LENGTH_SHORT).show();
 //            startActivity(new Intent(getApplicationContext(), SignUpSosmed.class));
 //            finish();
-            App.TShort("success");
+            App.TShort(mContext,"success");
             navSuccess();
         }
     }
@@ -436,7 +435,7 @@ public class SignIn extends Fragment implements Validator.ValidationListener,
                     public void onError(ANError error) {
                         pd.dismiss();
                         // handle error
-                        App.TShort(error.getErrorDetail());
+                        App.TShort(mContext,error.getErrorDetail());
                     }
                 });
     }

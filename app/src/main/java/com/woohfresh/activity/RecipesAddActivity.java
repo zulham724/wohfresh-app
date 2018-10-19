@@ -1,5 +1,6 @@
 package com.woohfresh.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -113,14 +114,14 @@ public class RecipesAddActivity extends AppCompatActivity implements Validator.V
                                             @Override
                                             public void onResponse(JSONObject response) {
                                                 pd.dismiss();
-                                                App.TShort("Resep berhasil dihapus");
+                                                App.TShort(c,"Resep berhasil dihapus");
                                                 App.intentFinish(RecipesAddActivity.this, MainActivity.class);
                                             }
 
                                             @Override
                                             public void onError(ANError error) {
                                                 pd.dismiss();
-                                                App.TShort("Resep berhasil dihapus");
+                                                App.TShort(c,"Resep berhasil dihapus");
                                                 App.intentFinish(RecipesAddActivity.this, MainActivity.class);
                                             }
                                         });
@@ -138,6 +139,7 @@ public class RecipesAddActivity extends AppCompatActivity implements Validator.V
 
     Validator validator;
     App.LoadingPrimary pd;
+    Context c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +148,7 @@ public class RecipesAddActivity extends AppCompatActivity implements Validator.V
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Resep");
         ButterKnife.bind(this);
+        c = this;
         llAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,7 +245,7 @@ public class RecipesAddActivity extends AppCompatActivity implements Validator.V
             String preparation_time = tvTagSb.getText().toString();
             String portion_per_serve = etPortion.getText().toString();
 
-//        App.TShort(user_id + "\n" +name + "\n" +description + "\n" +tutorial + "\n" +difficulty_level + "\n" +preparation_time + "\n" +portion_per_serve);
+//        App.TShort(c,user_id + "\n" +name + "\n" +description + "\n" +tutorial + "\n" +difficulty_level + "\n" +preparation_time + "\n" +portion_per_serve);
 
             AndroidNetworking.post(Apis.GET_RECIPES)
                     .addHeaders("Accept", "application/json")
@@ -259,14 +262,14 @@ public class RecipesAddActivity extends AppCompatActivity implements Validator.V
                         @Override
                         public void onResponse(JSONObject response) {
                             pd.dismiss();
-                            App.TShort("Resep berhasil ditambahkan");
+                            App.TShort(c,"Resep berhasil ditambahkan");
                             App.intentFinish(RecipesAddActivity.this, MainActivity.class);
                         }
 
                         @Override
                         public void onError(ANError error) {
                             pd.dismiss();
-                            App.TShort(error.getErrorDetail());
+                            App.TShort(c,error.getErrorDetail());
                         }
                     });
         }else if(mEdit.getVisibility() == View.VISIBLE){
@@ -294,14 +297,14 @@ public class RecipesAddActivity extends AppCompatActivity implements Validator.V
                         @Override
                         public void onResponse(JSONObject response) {
                             pd.dismiss();
-                            App.TShort("Resep berhasil diperbaharui");
+                            App.TShort(c,"Resep berhasil diperbaharui");
                             App.intentFinish(RecipesAddActivity.this, MainActivity.class);
                         }
 
                         @Override
                         public void onError(ANError error) {
                             pd.dismiss();
-                            App.TShort(error.getErrorDetail());
+                            App.TShort(c,error.getErrorDetail());
                         }
                     });
         }
